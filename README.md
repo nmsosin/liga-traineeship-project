@@ -38,7 +38,7 @@ Webpack, Eslint, Prettier
 │       ├── taskList                             # например, папка taskList, в которой содержится компонент страницы списка задач
 │           ├── components                         # внутренние компоненты
 │           ├── integration                        # файлы для redux
-|           ├── TaskList.tsx                       # корневой файл компонента
+|           ├── task-list.tsx                       # корневой файл компонента
 |           ├── TaskList.types.ts                  # типы для компонента, например интерфейс пропсов TaskListProps
 │   ├── components                             # папка для компонентов без бизнес-логики (dumb components)
 │   ├── constants                              # общие константы разбитые по файлам
