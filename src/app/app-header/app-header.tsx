@@ -6,7 +6,7 @@ export const AppHeader: FC = () => {
   return (
     <header className={styles.headerWrapper}>
       <NavLink className={styles.navLink} to={'/'}>
-        <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="50" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="72" height="72" rx="36" fill="#F3F0EC" />
           <path
             d="M20.2776 52.2297L42.0675 58.0404C46.8289 59.3101 51.5 55.7213 51.5 50.7936L51.5 24.015C51.5 19.1998 47.027 15.6321 42.3323 16.7028L32.9717 18.8377L21.6253 21.4254C18.3944 22.1623 16.0301 24.9323 15.8096 28.2388L14.7266 44.484C14.4882 48.0607 16.814 51.3061 20.2776 52.2297Z"
@@ -20,20 +20,22 @@ export const AppHeader: FC = () => {
             strokeWidth="7"
           />
         </svg>
-        <h1>Todo list</h1>
+        <h1 className={styles.headerTitle}>Todo list</h1>
       </NavLink>
       <form className={styles.searchForm} action="submit">
         <SearchInput
           onChange={() => {
             console.log('1');
           }}
-          value={'value'}
+          value={''}
         />
 
-        <button type={'submit'}>Find</button>
+        <button className={styles.findButton} type={'submit'}>
+          Find
+        </button>
       </form>
 
-      <NavLink to={'/task-form'} className={styles.navLink}>
+      <NavLink to={'/task-form'} className={`${styles.navLink} ${styles.addButton}`}>
         Add new task
       </NavLink>
     </header>

@@ -1,4 +1,43 @@
 .listItem {
-  background-color: #ad9898;
   padding: 20px;
+  border: 2px solid #ad9898;
+  border-radius: 20px;
+}
+
+.taskHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 30px;
+}
+
+.taskActions {
+  display: flex;
+  gap: 10px;
+}
+
+.taskTitle {
+  font-size: 28px;
+  color: #AD9898;
+  position: relative;
+  margin: 0;
+  padding-top: 25px;
+}
+
+.taskDescription {
+  margin: 0;
+  padding-bottom: 40px;
+}
+
+.taskId {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 20px;
+  color: #dcd5cc;
+}
+
+.deleteButton {
+  border: none;
+  background-color: transparent;
 }

@@ -14,7 +14,40 @@
   cursor: pointer;
 }
 
+.headerTitle {
+  font-size: 22px;
+  color: #3F3E45;
+  padding-left: 10px;
+  text-transform: uppercase;
+}
+
 .searchForm {
   display: flex;
+  padding-right: 20px;
+}
 
+.findButton {
+  border: 1px solid #AD9898;
+  border-radius: 5px;
+  background-color: #F3F0EC;
+  color: #AD9898;
+  padding: 5px 20px;
+}
+
+.findButton:hover {
+  border: 1px solid #3F3E45;
+  color: #3F3E45;
+}
+
+.addButton {
+  border: none;
+  border-radius: 5px;
+  background-color: #AD9898;
+  color: #F3F0EC;
+  white-space: nowrap;
+  padding: 7px 15px;
+}
+
+.addButton:hover {
+  color: #3F3E45;
 }
