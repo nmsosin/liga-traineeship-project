@@ -22,7 +22,7 @@ export const AppHeader: FC = () => {
         </svg>
         <h1>Todo list</h1>
       </NavLink>
-      <form action="submit">
+      <form className={styles.searchForm} action="submit">
         <SearchInput
           onChange={() => {
             console.log('1');

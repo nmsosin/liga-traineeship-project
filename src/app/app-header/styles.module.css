@@ -13,3 +13,8 @@
   color: #3F3E45;
   cursor: pointer;
 }
+
+.searchForm {
+  display: flex;
+
+}
