@@ -1,5 +1,7 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { DELETE_TASK } from '../../services/actions/taskActions';
 import styles from './styles.module.css';
 import { TTask } from 'types/tasks';
 import { Checkbox } from 'components/Checkbox';
@@ -9,16 +11,20 @@ type TTaskItemProps = {
 };
 
 export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
-  const { id, name, info, isImportant, isCompleted } = task;
-
+  const { _id, name, info, isImportant, isCompleted } = task;
+  const dispatch = useDispatch();
+  const handleDeleteTask = (taskId: number) => {
+    console.log(_id);
+    dispatch({ type: DELETE_TASK, payload: taskId });
+  };
   return (
-    <li key={id} className={styles.listItem}>
+    <li key={_id} className={styles.listItem}>
       <div className={styles.taskHeader}>
         <h2 className={styles.taskTitle}>
-          {name} <span className={styles.taskId}>{`id #${id}`}</span>
+          {name} <span className={styles.taskId}>{`id #${_id}`}</span>
         </h2>
         <div className={styles.taskActions}>
-          <NavLink className={styles.addButton} to={`task-form/${id}`}>
+          <NavLink className={styles.addButton} to={`task-form/${_id}`}>
             <svg width="40" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="45" height="45" rx="22.5" fill="#F3F0EC" />
               <rect x="22.1667" y="20.5" width="1.66667" height="12.5" rx="0.833333" fill="#F3F0EC" />
@@ -51,7 +57,7 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
               />
             </svg>
           </NavLink>
-          <button className={styles.deleteButton} type={'button'}>
+          <button className={styles.deleteButton} type={'button'} onClick={() => handleDeleteTask(_id)}>
             <svg width="40" height="40" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="45" height="45" rx="22.5" fill="#F3F0EC" />
               <path

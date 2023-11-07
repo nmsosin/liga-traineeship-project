@@ -8,7 +8,7 @@ import { mockTasks } from 'mocks/mockTasks';
 
 export const TaskForm: FC = () => {
   const { id } = useParams();
-  const task = id ? mockTasks.filter((task) => Number(task.id) === Number(id))[0] : null;
+  const task = id ? mockTasks.filter((task) => Number(task._id) === Number(id))[0] : null;
 
   return (
     <PageContainer>
