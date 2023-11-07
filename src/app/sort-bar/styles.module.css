@@ -1,0 +1,30 @@
+.sortBar {
+  display: flex;
+  justify-content: center;
+  padding: 0 0 20px;
+}
+
+.sortButton {
+  background-color: transparent;
+  border: 2px solid #AD9898;
+  color: #AD9898;
+  box-sizing: border-box;
+  padding: 5px 15px;
+}
+
+.sortButton:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+.sortButton:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+.sortButton:hover {
+  transform: translateY(-3px);
+}
+
+.active {
+  background-color: #AD9898;
+  color: #F3F0EC;
+}

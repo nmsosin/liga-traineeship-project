@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import styles from 'pages/task-list/styles.module.css';
+import styles from './styles.module.css';
 
 export const SortBar: FC = () => {
   const [sort, setSort] = useState<'all' | 'active' | 'done' | 'important'>('all');

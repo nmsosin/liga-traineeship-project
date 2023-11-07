@@ -1,0 +1,35 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 20px;
+  border: 2px solid #ad9898;
+  border-radius: 20px;
+}
+
+.formTitle {
+  text-align: center;
+  font-size: 32px;
+  color: #ad9898;
+  margin: 0;
+  padding-bottom: 20px;
+}
+
+.label {
+  color: #ad9898;
+  font-size: 18px;
+}
+
+.saveButton {
+  border: none;
+  border-radius: 5px;
+  background-color: #AD9898;
+  color: #F3F0EC;
+  white-space: nowrap;
+  padding: 7px 45px;
+  margin-top: 40px;
+  align-self: center;
+}
+
+.saveButton:hover {
+  color: #3F3E45;
+}

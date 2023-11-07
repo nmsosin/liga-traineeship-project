@@ -18,7 +18,7 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
           {name} <span className={styles.taskId}>{`id #${id}`}</span>
         </h2>
         <div className={styles.taskActions}>
-          <NavLink className={styles.addButton} to={`task-form/:${id}`}>
+          <NavLink className={styles.addButton} to={`task-form/${id}`}>
             <svg width="40" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="45" height="45" rx="22.5" fill="#F3F0EC" />
               <rect x="22.1667" y="20.5" width="1.66667" height="12.5" rx="0.833333" fill="#F3F0EC" />
@@ -71,8 +71,15 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
         </div>
       </div>
       <p className={styles.taskDescription}>{info}</p>
-      <Checkbox label={'important'} checked={isImportant} onChange={() => console.log(isImportant)} disabled={false} />
-      <Checkbox label={'done'} checked={isCompleted} onChange={() => console.log(isCompleted)} disabled={false} />
+      <div className={styles.checkboxes}>
+        <Checkbox
+          label={'important'}
+          checked={isImportant}
+          onChange={() => console.log(isImportant)}
+          disabled={false}
+        />
+        <Checkbox label={'done'} checked={isCompleted} onChange={() => console.log(isCompleted)} disabled={false} />
+      </div>
     </li>
   );
 };
