@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import styles from './styles.module.css';
 import { TaskForm } from 'pages/task-form/task-form';
 import { TaskList } from 'pages/task-list/task-list';

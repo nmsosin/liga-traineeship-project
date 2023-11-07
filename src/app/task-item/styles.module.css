@@ -16,6 +16,10 @@
   gap: 10px;
 }
 
+.addButton:hover {
+  transform: scale(1.1);
+}
+
 .taskTitle {
   font-size: 28px;
   color: #AD9898;
@@ -40,4 +44,8 @@
 .deleteButton {
   border: none;
   background-color: transparent;
+}
+
+.deleteButton:hover {
+  transform: scale(1.1);
 }
