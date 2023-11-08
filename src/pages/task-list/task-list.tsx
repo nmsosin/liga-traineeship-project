@@ -1,12 +1,14 @@
-import { FC, useState } from 'react';
+import { FC, FormEvent, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { TStore } from '../../services/reducers';
 import styles from './styles.module.css';
 import { TaskItem } from 'app/task-item/task-item';
 import { TTask } from 'types/tasks';
+import { SearchInput } from 'components/SearchInput';
 
 export const TaskList: FC = () => {
-  const [sort, setSort] = useState<'all' | 'active' | 'done' | 'important'>('all');
+  const [filter, setFilter] = useState('');
+  const [sort, setSort] = useState<'all' | 'active' | 'done' | 'important' | 'filter'>('all');
   const tasks = useSelector((store: TStore) => store.taskList.tasks);
   const filteredTasks = tasks.filter((task) => {
     switch (sort) {
@@ -16,12 +18,30 @@ export const TaskList: FC = () => {
         return task.isCompleted;
       case 'important':
         return task.isImportant;
+      case 'filter':
+        return task.name.toLowerCase() === filter.toLowerCase();
       default:
         return task;
     }
   });
+  const handleSearchSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    setSort('filter');
+  };
+  const handleResetClick = () => {
+    setFilter('');
+    setSort('all');
+    console.log(sort);
+  };
   return (
     <section>
+      <form className={styles.searchForm} action="submit" onSubmit={handleSearchSubmit}>
+        <SearchInput onChange={setFilter} onReset={handleResetClick} value={filter} />
+
+        <button className={styles.findButton} type={'submit'}>
+          Find
+        </button>
+      </form>
       <nav className={styles.sortBar}>
         <button
           onClick={() => setSort('all')}

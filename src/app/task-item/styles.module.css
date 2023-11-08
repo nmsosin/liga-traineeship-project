@@ -4,6 +4,24 @@
   border-radius: 20px;
 }
 
+.important {
+  border: 2px solid #d04a4a;
+}
+
+.important .taskTitle {
+  color: #d04a4a;
+}
+
+.completed {
+  text-decoration: line-through;
+  border: 2px solid #ad9898;
+  color: rgba(173, 152, 152, 0.5);
+}
+
+.completed .taskTitle {
+  color: rgba(173, 152, 152, 0.5);
+}
+
 .taskHeader {
   display: flex;
   justify-content: space-between;

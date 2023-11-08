@@ -28,7 +28,9 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
     dispatch({ type: CHANGE_TASK_STATUS, id: _id, payload: !status });
   };
   return (
-    <li key={_id} className={styles.listItem}>
+    <li
+      key={_id}
+      className={`${styles.listItem} ${isCompleted ? styles.completed : ''} ${isImportant ? styles.important : ''}`}>
       <div className={styles.taskHeader}>
         <h2 className={styles.taskTitle}>
           {name} <span className={styles.taskId}>{`id #${_id.substring(0, 8)}`}</span>

@@ -31,7 +31,6 @@ export const TaskForm: FC = () => {
   const [importance, setImportance] = useState(isImportant);
   const handleImportanceChange = () => {
     setImportance(!importance);
-    console.log(importance);
   };
   const handleSubmitChanges = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
