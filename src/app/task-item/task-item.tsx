@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { DELETE_TASK } from '../../services/actions/taskActions';
+import { CHANGE_TASK_IMPORTANCE, CHANGE_TASK_STATUS, DELETE_TASK } from '../../services/actions/taskActions';
 import styles from './styles.module.css';
 import { TTask } from 'types/tasks';
 import { Checkbox } from 'components/Checkbox';
@@ -12,10 +12,20 @@ type TTaskItemProps = {
 
 export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
   const { _id, name, info, isImportant, isCompleted } = task;
+  const [importance, setImportance] = useState(isImportant);
+  const [status, setStatus] = useState(isCompleted);
+
   const dispatch = useDispatch();
   const handleDeleteTask = (taskId: number) => {
-    console.log(_id);
     dispatch({ type: DELETE_TASK, payload: taskId });
+  };
+  const handleImportanceChange = () => {
+    setImportance(!importance);
+    dispatch({ type: CHANGE_TASK_IMPORTANCE, id: _id, payload: !importance });
+  };
+  const handleStatusChange = () => {
+    setStatus(!status);
+    dispatch({ type: CHANGE_TASK_STATUS, id: _id, payload: !status });
   };
   return (
     <li key={_id} className={styles.listItem}>
@@ -24,7 +34,7 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
           {name} <span className={styles.taskId}>{`id #${_id}`}</span>
         </h2>
         <div className={styles.taskActions}>
-          <NavLink className={styles.addButton} to={`task-form/${_id}`}>
+          <NavLink className={styles.editButton} to={`task-form/${_id}`}>
             <svg width="40" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="45" height="45" rx="22.5" fill="#F3F0EC" />
               <rect x="22.1667" y="20.5" width="1.66667" height="12.5" rx="0.833333" fill="#F3F0EC" />
@@ -79,12 +89,13 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
       <p className={styles.taskDescription}>{info}</p>
       <div className={styles.checkboxes}>
         <Checkbox
+          id={_id}
           label={'important'}
-          checked={isImportant}
-          onChange={() => console.log(isImportant)}
+          checked={importance}
+          onChange={handleImportanceChange}
           disabled={false}
         />
-        <Checkbox label={'done'} checked={isCompleted} onChange={() => console.log(isCompleted)} disabled={false} />
+        <Checkbox id={_id} label={'done'} checked={status} onChange={handleStatusChange} disabled={false} />
       </div>
     </li>
   );

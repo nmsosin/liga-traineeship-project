@@ -20,7 +20,6 @@ export const TaskList: FC = () => {
         return task;
     }
   });
-  console.log(filteredTasks);
   return (
     <section>
       <nav className={styles.sortBar}>

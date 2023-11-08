@@ -16,7 +16,7 @@
   gap: 10px;
 }
 
-.addButton:hover {
+.editButton:hover {
   transform: scale(1.1);
 }
 

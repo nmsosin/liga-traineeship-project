@@ -4,6 +4,7 @@ import './TextField.css';
 
 export function TextField({
   label,
+  name,
   placeholder,
   containerClassName = '',
   inputType,
@@ -20,6 +21,7 @@ export function TextField({
         type={inputType}
         className="form-control"
         id={label}
+        name={name}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
