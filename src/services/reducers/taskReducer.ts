@@ -3,28 +3,29 @@ import {
   CHANGE_TASK_IMPORTANCE,
   CHANGE_TASK_STATUS,
   DELETE_TASK,
-  TTaskActions, UPDATE_TASK
-} from "../actions/taskActions";
+  TTaskActions,
+  UPDATE_TASK,
+} from '../actions/taskActions';
 import { TTask } from 'types/tasks';
 import { mockTasks } from 'mocks/mockTasks';
 
 export type TInitialTaskState = {
   tasks: TTask[];
-  newTask: TTask | null;
 };
 
 export const initialTaskState: TInitialTaskState = {
   tasks: mockTasks,
-  newTask: null,
 };
 
 export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
   switch (action.type) {
-    case ADD_TASK:
+    case ADD_TASK: {
+      const stateCopy = { ...state };
+      stateCopy.tasks.push(action.payload);
       return {
-        ...state,
-        newTask: action.payload,
+        ...stateCopy,
       };
+    }
     case UPDATE_TASK: {
       const stateCopy = { ...state };
       const task = stateCopy.tasks.find((task) => {

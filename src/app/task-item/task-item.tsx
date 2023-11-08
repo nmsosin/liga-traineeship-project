@@ -16,8 +16,8 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
   const [status, setStatus] = useState(isCompleted);
 
   const dispatch = useDispatch();
-  const handleDeleteTask = (taskId: number) => {
-    dispatch({ type: DELETE_TASK, payload: taskId });
+  const handleDeleteTask = (taskId: string) => {
+    dispatch({ type: DELETE_TASK, id: taskId });
   };
   const handleImportanceChange = () => {
     setImportance(!importance);
@@ -31,7 +31,7 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
     <li key={_id} className={styles.listItem}>
       <div className={styles.taskHeader}>
         <h2 className={styles.taskTitle}>
-          {name} <span className={styles.taskId}>{`id #${_id}`}</span>
+          {name} <span className={styles.taskId}>{`id #${_id.substring(0, 8)}`}</span>
         </h2>
         <div className={styles.taskActions}>
           <NavLink className={styles.editButton} to={`task-form/${_id}`}>

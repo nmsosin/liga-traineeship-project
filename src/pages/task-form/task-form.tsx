@@ -36,14 +36,17 @@ export const TaskForm: FC = () => {
   const handleSubmitChanges = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     console.log(evt);
-    if (_id) {
+    if (id) {
       dispatch({
         type: UPDATE_TASK,
         id: _id,
         payload: { name: values.name, info: values.info, isImportant: importance },
       });
     } else {
-      dispatch({ type: ADD_TASK });
+      dispatch({
+        type: ADD_TASK,
+        payload: { _id: _id, name: values.name, info: values.info, isImportant: importance, isCompleted: isCompleted },
+      });
     }
     navigate(-1);
   };

@@ -13,24 +13,24 @@ interface IAddTask {
 
 interface IUpdateTask {
   readonly type: typeof UPDATE_TASK;
-  id: number;
+  id: string;
   payload: TTask;
 }
 
 interface IDeleteTask {
   readonly type: typeof DELETE_TASK;
-  id: number;
+  id: string;
 }
 
 interface IChangeTaskImportance {
   readonly type: typeof CHANGE_TASK_IMPORTANCE;
-  id: number;
+  id: string;
   payload: boolean;
 }
 
 interface IChangeTaskStatus {
   readonly type: typeof CHANGE_TASK_STATUS;
-  id: number;
+  id: string;
   payload: boolean;
 }
 
