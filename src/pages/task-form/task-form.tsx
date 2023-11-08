@@ -16,7 +16,7 @@ export const TaskForm: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const task = id
-    ? mockTasks.filter((task) => Number(task._id) === Number(id))[0]
+    ? mockTasks.filter((task) => task._id === id)[0]
     : { name: '', info: '', isImportant: false, isCompleted: false, _id: v1() };
   const { _id, name, info, isImportant, isCompleted } = task as TTask;
   const { values, handleChange } = task
