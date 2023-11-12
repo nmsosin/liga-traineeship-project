@@ -1,24 +1,28 @@
 import { FC, FormEvent, FormEventHandler, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { v1 } from 'uuid';
 import { useForm } from '../../services/hooks/use-form';
 import { ADD_TASK, UPDATE_TASK } from '../../services/actions/taskActions';
+import { TStore } from '../../services/reducers';
+import { addNewTask } from '../../services/actions/taskListActions';
+import { useAppDispatch } from '../../services/hooks/hooks';
 import styles from './styles.module.css';
 import { PageContainer } from 'components/PageContainer';
 import { TextField } from 'components/TextField';
 import { Checkbox } from 'components/Checkbox';
-import { mockTasks } from 'mocks/mockTasks';
+
 import { TTask } from 'types/tasks';
 
 export const TaskForm: FC = () => {
-  const { id } = useParams();
+  const { id: taskId } = useParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const task = id
-    ? mockTasks.filter((task) => task._id === id)[0]
+  const dispatch = useAppDispatch();
+  const tasks = useSelector((store: TStore) => store.taskList.tasks);
+  const task = taskId
+    ? tasks.filter((task) => task.id === taskId)[0]
     : { name: '', info: '', isImportant: false, isCompleted: false, _id: v1() };
-  const { _id, name, info, isImportant, isCompleted } = task as TTask;
+  const { id, name, info, isImportant, isCompleted } = task as TTask;
   const { values, handleChange } = task
     ? useForm({
         name: name,
@@ -29,8 +33,12 @@ export const TaskForm: FC = () => {
         info: '',
       });
   const [importance, setImportance] = useState(isImportant);
+  const [status, setStatus] = useState(isCompleted);
   const handleImportanceChange = () => {
     setImportance(!importance);
+  };
+  const handleStatusChange = () => {
+    setStatus(!status);
   };
   const handleSubmitChanges = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -38,14 +46,18 @@ export const TaskForm: FC = () => {
     if (id) {
       dispatch({
         type: UPDATE_TASK,
-        id: _id,
-        payload: { name: values.name, info: values.info, isImportant: importance },
+        id: id,
+        payload: { name: values.name, info: values.info, isImportant: importance, isCompleted: isCompleted },
       });
     } else {
-      dispatch({
-        type: ADD_TASK,
-        payload: { _id: _id, name: values.name, info: values.info, isImportant: importance, isCompleted: isCompleted },
-      });
+      const newTask = {
+        _id: id,
+        name: values.name,
+        info: values.info,
+        isImportant: importance,
+        isCompleted: isCompleted,
+      };
+      dispatch(addNewTask(newTask));
     }
     navigate(-1);
   };
@@ -73,13 +85,8 @@ export const TaskForm: FC = () => {
           onChange={handleChange}
           errorText={''}
         />
-        <Checkbox
-          id={_id}
-          label={'important'}
-          checked={importance}
-          onChange={handleImportanceChange}
-          disabled={false}
-        />
+        <Checkbox id={id} label={'important'} checked={importance} onChange={handleImportanceChange} disabled={false} />
+        <Checkbox id={id} label={'done'} checked={status} onChange={handleStatusChange} disabled={false} />
         <button className={styles.saveButton} type={'submit'}>
           Save
         </button>

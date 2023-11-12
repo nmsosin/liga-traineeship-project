@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { v4 } from 'uuid';
 import { CHANGE_TASK_IMPORTANCE, CHANGE_TASK_STATUS, DELETE_TASK } from '../../services/actions/taskActions';
 import styles from './styles.module.css';
 import { TTask } from 'types/tasks';
@@ -11,7 +12,7 @@ type TTaskItemProps = {
 };
 
 export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
-  const { _id, name, info, isImportant, isCompleted } = task;
+  const { id, name, info, isImportant, isCompleted } = task;
   const [importance, setImportance] = useState(isImportant);
   const [status, setStatus] = useState(isCompleted);
 
@@ -21,22 +22,22 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
   };
   const handleImportanceChange = () => {
     setImportance(!importance);
-    dispatch({ type: CHANGE_TASK_IMPORTANCE, id: _id, payload: !importance });
+    dispatch({ type: CHANGE_TASK_IMPORTANCE, id: id, payload: !importance });
   };
   const handleStatusChange = () => {
     setStatus(!status);
-    dispatch({ type: CHANGE_TASK_STATUS, id: _id, payload: !status });
+    dispatch({ type: CHANGE_TASK_STATUS, id: id, payload: !status });
   };
   return (
     <li
-      key={_id}
+      key={id ? id : v4()}
       className={`${styles.listItem} ${isCompleted ? styles.completed : ''} ${isImportant ? styles.important : ''}`}>
       <div className={styles.taskHeader}>
         <h2 className={styles.taskTitle}>
-          {name} <span className={styles.taskId}>{`id #${_id.substring(0, 8)}`}</span>
+          {name} <span className={styles.taskId}>{`id #${id}`}</span>
         </h2>
         <div className={styles.taskActions}>
-          <NavLink className={styles.editButton} to={`task-form/${_id}`}>
+          <NavLink className={styles.editButton} to={`task-form/${id}`}>
             <svg width="40" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="45" height="45" rx="22.5" fill="#F3F0EC" />
               <rect x="22.1667" y="20.5" width="1.66667" height="12.5" rx="0.833333" fill="#F3F0EC" />
@@ -69,7 +70,7 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
               />
             </svg>
           </NavLink>
-          <button className={styles.deleteButton} type={'button'} onClick={() => handleDeleteTask(_id)}>
+          <button className={styles.deleteButton} type={'button'} onClick={() => handleDeleteTask(id)}>
             <svg width="40" height="40" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="45" height="45" rx="22.5" fill="#F3F0EC" />
               <path
@@ -90,14 +91,8 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
       </div>
       <p className={styles.taskDescription}>{info}</p>
       <div className={styles.checkboxes}>
-        <Checkbox
-          id={_id}
-          label={'important'}
-          checked={importance}
-          onChange={handleImportanceChange}
-          disabled={false}
-        />
-        <Checkbox id={_id} label={'done'} checked={status} onChange={handleStatusChange} disabled={false} />
+        <Checkbox id={id} label={'important'} checked={importance} onChange={handleImportanceChange} disabled={false} />
+        <Checkbox id={id} label={'done'} checked={status} onChange={handleStatusChange} disabled={false} />
       </div>
     </li>
   );

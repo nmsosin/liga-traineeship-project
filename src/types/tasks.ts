@@ -3,5 +3,5 @@ export type TTask = {
   info: string;
   isImportant: boolean;
   isCompleted?: boolean;
-  _id: string;
+  id: string;
 };

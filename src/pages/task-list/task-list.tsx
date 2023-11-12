@@ -9,6 +9,8 @@ import { SearchInput } from 'components/SearchInput';
 export const TaskList: FC = () => {
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState<'all' | 'active' | 'done' | 'important' | 'filter'>('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tasksperPage] = useState(10);
   const tasks = useSelector((store: TStore) => store.taskList.tasks);
   const filteredTasks = tasks.filter((task) => {
     switch (sort) {
@@ -68,9 +70,7 @@ export const TaskList: FC = () => {
           Important
         </button>
       </nav>
-      <ul className={styles.tasks}>
-        {filteredTasks && filteredTasks.map((task: TTask) => <TaskItem task={task} key={task._id} />)}
-      </ul>
+      <ul className={styles.tasks}>{tasks && tasks.map((task: TTask) => <TaskItem task={task} key={task.id} />)}</ul>
     </section>
   );
 };

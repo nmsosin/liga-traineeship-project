@@ -39,6 +39,8 @@
 }
 
 .taskTitle {
+  word-wrap: break-word;
+  max-width: 400px;
   font-size: 28px;
   color: #AD9898;
   position: relative;
@@ -47,6 +49,8 @@
 }
 
 .taskDescription {
+  word-wrap: break-word;
+  max-width: 500px;
   margin: 0;
   padding-bottom: 40px;
 }

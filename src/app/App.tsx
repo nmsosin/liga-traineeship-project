@@ -1,5 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { getTaskListData } from '../services/actions/taskListActions';
+import { useAppDispatch } from '../services/hooks/hooks';
 import styles from './styles.module.css';
 import { TaskForm } from 'pages/task-form/task-form';
 import { TaskList } from 'pages/task-list/task-list';
@@ -9,6 +11,10 @@ import { AppHeader } from 'app/app-header/app-header';
 import { ADD_TASK_PAGE_ROUTE, EDIT_TASK_PAGE_ROUTE, MAIN_PAGE_ROUTE } from 'constants/routes';
 
 export const App: FC = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getTaskListData());
+  }, [dispatch]);
   return (
     <PageContainer className={styles.page}>
       <AppHeader />

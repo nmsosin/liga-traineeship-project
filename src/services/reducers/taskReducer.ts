@@ -7,14 +7,13 @@ import {
   UPDATE_TASK,
 } from '../actions/taskActions';
 import { TTask } from 'types/tasks';
-import { mockTasks } from 'mocks/mockTasks';
 
 export type TInitialTaskState = {
   tasks: TTask[];
 };
 
 export const initialTaskState: TInitialTaskState = {
-  tasks: mockTasks,
+  tasks: [],
 };
 
 export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
@@ -29,7 +28,7 @@ export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
     case UPDATE_TASK: {
       const stateCopy = { ...state };
       const task = stateCopy.tasks.find((task) => {
-        return task._id === action.id;
+        return task.id === action.id;
       });
       if (task) {
         task.name = action.payload.name;
@@ -44,13 +43,13 @@ export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
       return {
         ...state,
         tasks: state.tasks.filter((task) => {
-          return task._id !== action.id;
+          return task.id !== action.id;
         }),
       };
     case CHANGE_TASK_IMPORTANCE: {
       const stateCopy = { ...state };
       const task = stateCopy.tasks.find((task) => {
-        return task._id === action.id;
+        return task.id === action.id;
       });
       if (task) {
         task.isImportant = action.payload;
@@ -62,7 +61,7 @@ export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
     case CHANGE_TASK_STATUS: {
       const stateCopy = { ...state };
       const task = stateCopy.tasks.find((task) => {
-        return task._id === action.id;
+        return task.id === action.id;
       });
       if (task) {
         task.isCompleted = action.payload;
