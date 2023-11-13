@@ -1,11 +1,14 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
-import { CHANGE_TASK_IMPORTANCE, CHANGE_TASK_STATUS, DELETE_TASK } from '../../services/actions/taskActions';
+import { deleteTask, updateTask } from '../../services/actions/taskActions';
+import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
+import { TStore } from '../../services/reducers';
+import { getTaskListData } from '../../services/actions/taskListActions';
 import styles from './styles.module.css';
 import { TTask } from 'types/tasks';
 import { Checkbox } from 'components/Checkbox';
+import { booleanMap } from 'utils/mappers';
 
 type TTaskItemProps = {
   task: TTask;
@@ -13,20 +16,34 @@ type TTaskItemProps = {
 
 export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
   const { id, name, info, isImportant, isCompleted } = task;
-  const [importance, setImportance] = useState(isImportant);
-  const [status, setStatus] = useState(isCompleted);
-
-  const dispatch = useDispatch();
-  const handleDeleteTask = (taskId: string) => {
-    dispatch({ type: DELETE_TASK, id: taskId });
+  const [importance, setImportance] = useState(booleanMap(isImportant));
+  const [status, setStatus] = useState(booleanMap(isCompleted));
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const updateRequestStatus = useAppSelector((store: TStore) => store.task.updateTaskRequest);
+  const deleteRequestStatus = useAppSelector((store: TStore) => store.task.deleteTaskRequest);
+  useEffect(() => {
+    setIsLoading(updateRequestStatus || deleteRequestStatus);
+  }, [updateRequestStatus, deleteRequestStatus]);
+  const handleDeleteTask = (taskId: number) => {
+    dispatch(deleteTask(taskId));
+    setTimeout(() => {
+      dispatch(getTaskListData());
+    }, 0);
   };
   const handleImportanceChange = () => {
     setImportance(!importance);
-    dispatch({ type: CHANGE_TASK_IMPORTANCE, id: id, payload: !importance });
+    dispatch(updateTask(id, { isImportant: !importance }));
+    setTimeout(() => {
+      dispatch(getTaskListData());
+    }, 0);
   };
   const handleStatusChange = () => {
     setStatus(!status);
-    dispatch({ type: CHANGE_TASK_STATUS, id: id, payload: !status });
+    dispatch(updateTask(id, { isCompleted: !status }));
+    setTimeout(() => {
+      dispatch(getTaskListData());
+    }, 0);
   };
   return (
     <li
@@ -91,8 +108,20 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
       </div>
       <p className={styles.taskDescription}>{info}</p>
       <div className={styles.checkboxes}>
-        <Checkbox id={id} label={'important'} checked={importance} onChange={handleImportanceChange} disabled={false} />
-        <Checkbox id={id} label={'done'} checked={status} onChange={handleStatusChange} disabled={false} />
+        <Checkbox
+          id={id}
+          label={'important'}
+          checked={importance}
+          onChange={isLoading ? undefined : handleImportanceChange}
+          disabled={isLoading || status}
+        />
+        <Checkbox
+          id={id}
+          label={'done'}
+          checked={status}
+          onChange={isLoading ? undefined : handleStatusChange}
+          disabled={isLoading}
+        />
       </div>
     </li>
   );

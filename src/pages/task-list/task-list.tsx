@@ -1,76 +1,104 @@
-import { FC, FormEvent, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { FC, FormEvent, useEffect, useMemo, useState } from 'react';
 import { TStore } from '../../services/reducers';
+import { getSortedTasks, getTaskListData } from '../../services/actions/taskListActions';
+import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
 import styles from './styles.module.css';
 import { TaskItem } from 'app/task-item/task-item';
 import { TTask } from 'types/tasks';
 import { SearchInput } from 'components/SearchInput';
+import { Loader } from 'components/Loader';
 
 export const TaskList: FC = () => {
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState<'all' | 'active' | 'done' | 'important' | 'filter'>('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [tasksperPage] = useState(10);
-  const tasks = useSelector((store: TStore) => store.taskList.tasks);
-  const filteredTasks = tasks.filter((task) => {
-    switch (sort) {
-      case 'active':
-        return !task.isCompleted;
-      case 'done':
-        return task.isCompleted;
-      case 'important':
-        return task.isImportant;
-      case 'filter':
-        return task.name.toLowerCase() === filter.toLowerCase();
-      default:
-        return task;
-    }
-  });
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getTaskListData());
+  }, [dispatch]);
+  const status = useAppSelector((store: TStore) => store.taskList.taskListRequest);
+  const [isLoading, setIsLoading] = useState(status);
+  useEffect(() => {
+    setIsLoading(status);
+  }, [status]);
+  const taskList = useAppSelector((store: TStore) => store.taskList.tasks);
+  const tasks = useMemo(() => {
+    return [...taskList].reverse();
+  }, [taskList]);
+  // TODO: add pagination
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [tasksperPage] = useState(10);
+
   const handleSearchSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     setSort('filter');
+    dispatch(getSortedTasks({ name_like: filter }));
   };
   const handleResetClick = () => {
     setFilter('');
     setSort('all');
-    console.log(sort);
+    dispatch(getTaskListData());
+  };
+  const handleSortAll = () => {
+    setSort('all');
+    dispatch(getTaskListData());
+  };
+
+  const handleSortActive = () => {
+    setSort('active');
+    dispatch(getSortedTasks({ isCompleted: false || 'false' || undefined }));
+  };
+
+  const handleSortDone = () => {
+    setSort('done');
+    dispatch(getSortedTasks({ isCompleted: true || 'true' }));
+  };
+
+  const handleSortImportant = () => {
+    setSort('important');
+    dispatch(getSortedTasks({ isImportant: true || 'true' }));
   };
   return (
     <section>
       <form className={styles.searchForm} action="submit" onSubmit={handleSearchSubmit}>
         <SearchInput onChange={setFilter} onReset={handleResetClick} value={filter} />
 
-        <button className={styles.findButton} type={'submit'}>
+        <button className={styles.findButton} type={'submit'} disabled={filter.length === 0}>
           Find
         </button>
       </form>
       <nav className={styles.sortBar}>
         <button
-          onClick={() => setSort('all')}
+          onClick={handleSortAll}
           className={`${styles.sortButton} ${sort === 'all' ? styles.active : ''}`}
           type={'button'}>
           All
         </button>
         <button
-          onClick={() => setSort('active')}
+          onClick={handleSortActive}
           className={`${styles.sortButton} ${sort === 'active' ? styles.active : ''}`}
           type={'button'}>
           Active
         </button>
         <button
-          onClick={() => setSort('done')}
+          onClick={handleSortDone}
           className={`${styles.sortButton} ${sort === 'done' ? styles.active : ''}`}
           type={'button'}>
           Done
         </button>
         <button
-          onClick={() => setSort('important')}
+          onClick={handleSortImportant}
           className={`${styles.sortButton} ${sort === 'important' ? styles.active : ''}`}
           type={'button'}>
           Important
         </button>
       </nav>
-      <ul className={styles.tasks}>{tasks && tasks.map((task: TTask) => <TaskItem task={task} key={task.id} />)}</ul>
+      <div className={isLoading ? styles.wrapper : ''}>
+        <Loader isLoading={isLoading} variant={'circle'}>
+          <ul className={styles.tasks}>
+            {tasks && tasks.map((task: TTask) => <TaskItem task={task} key={task.id} />)}
+          </ul>
+        </Loader>
+      </div>
     </section>
   );
 };

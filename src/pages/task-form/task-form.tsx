@@ -1,11 +1,11 @@
-import { FC, FormEvent, FormEventHandler, useState } from 'react';
+import { FC, FormEvent, FormEventHandler, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { v1 } from 'uuid';
 import { useForm } from '../../services/hooks/use-form';
-import { ADD_TASK, UPDATE_TASK } from '../../services/actions/taskActions';
+import { updateTask } from '../../services/actions/taskActions';
 import { TStore } from '../../services/reducers';
-import { addNewTask } from '../../services/actions/taskListActions';
+import { addNewTask, getTaskListData } from '../../services/actions/taskListActions';
 import { useAppDispatch } from '../../services/hooks/hooks';
 import styles from './styles.module.css';
 import { PageContainer } from 'components/PageContainer';
@@ -20,7 +20,7 @@ export const TaskForm: FC = () => {
   const dispatch = useAppDispatch();
   const tasks = useSelector((store: TStore) => store.taskList.tasks);
   const task = taskId
-    ? tasks.filter((task) => task.id === taskId)[0]
+    ? tasks.filter((task) => Number(task.id) === Number(taskId))[0]
     : { name: '', info: '', isImportant: false, isCompleted: false, _id: v1() };
   const { id, name, info, isImportant, isCompleted } = task as TTask;
   const { values, handleChange } = task
@@ -44,21 +44,27 @@ export const TaskForm: FC = () => {
     evt.preventDefault();
     console.log(evt);
     if (id) {
-      dispatch({
-        type: UPDATE_TASK,
-        id: id,
-        payload: { name: values.name, info: values.info, isImportant: importance, isCompleted: isCompleted },
-      });
+      dispatch(
+        updateTask(id, {
+          _id: id,
+          name: values.name,
+          info: values.info,
+          isImportant: importance,
+          isCompleted: status,
+        })
+      );
     } else {
-      const newTask = {
-        _id: id,
-        name: values.name,
-        info: values.info,
-        isImportant: importance,
-        isCompleted: isCompleted,
-      };
-      dispatch(addNewTask(newTask));
+      dispatch(
+        addNewTask({
+          _id: id,
+          name: values.name,
+          info: values.info,
+          isImportant: importance,
+          isCompleted: status,
+        })
+      );
     }
+    dispatch(getTaskListData());
     navigate(-1);
   };
   return (

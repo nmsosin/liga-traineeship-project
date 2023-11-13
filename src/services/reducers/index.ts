@@ -4,10 +4,10 @@ import { taskListReducer, TInitialTaskListState } from './taskListReducer';
 
 export type TStore = {
   taskList: TInitialTaskListState;
-  // task: TInitialTaskState;
+  task: TInitialTaskState;
 };
 
 export const rootReducer = combineReducers({
-  // task: taskReducer,
+  task: taskReducer,
   taskList: taskListReducer,
 });

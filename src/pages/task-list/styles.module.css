@@ -26,6 +26,17 @@
   color: #3F3E45;
 }
 
+.findButton:disabled {
+  background-color: transparent;
+  cursor: auto;
+  color: rgba(173, 152, 152, 0.33);
+}
+
+.findButton:disabled:hover {
+  border: 1px solid #AD9898;
+  color: rgba(173, 152, 152, 0.33);
+}
+
 .sortBar {
   display: flex;
   justify-content: center;
@@ -55,4 +66,10 @@
 .active {
   background-color: #AD9898;
   color: #F3F0EC;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
 }

@@ -1,5 +1,5 @@
 import { TTask } from 'types/tasks';
-import request from 'utils/api';
+import { requestAdd, requestGetAll } from 'utils/api';
 import { AppDispatch, AppThunk } from 'types/requests';
 import { TASK_LIST_URL_ENDPOINT } from 'constants/urlEndpoints';
 
@@ -89,9 +89,28 @@ export type TTaskListActions =
 export const getTaskListData: AppThunk = () => {
   return function (dispatch: AppDispatch) {
     dispatch(getTasksRequest());
-    request(TASK_LIST_URL_ENDPOINT)
-      .then((res) => {
+    requestGetAll(TASK_LIST_URL_ENDPOINT)
+      .then((res: any) => {
         if (res) {
+          console.log('axios res', res);
+          dispatch(getTasksSuccess(res));
+        } else {
+          dispatch(getTasksFailed(new Error()));
+        }
+      })
+      .catch((err) => {
+        dispatch(getTasksFailed(err));
+      });
+  };
+};
+
+export const getSortedTasks: AppThunk = (params) => {
+  return function (dispatch: AppDispatch) {
+    dispatch(getTasksRequest());
+    requestGetAll(TASK_LIST_URL_ENDPOINT, { params })
+      .then((res: any) => {
+        if (res) {
+          console.log('axios res', res);
           dispatch(getTasksSuccess(res));
         } else {
           dispatch(getTasksFailed(new Error()));
@@ -106,12 +125,18 @@ export const getTaskListData: AppThunk = () => {
 export const addNewTask: AppThunk = (newTask: TTask) => {
   return function (dispatch: AppDispatch) {
     dispatch(addTaskRequest());
-    request(TASK_LIST_URL_ENDPOINT, {
-      method: 'POST',
+    // request(TASK_LIST_URL_ENDPOINT, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(newTask),
+    // })
+    requestAdd(TASK_LIST_URL_ENDPOINT, newTask, {
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-      body: JSON.stringify(newTask),
     })
       .then((res) => {
         if (res) {
