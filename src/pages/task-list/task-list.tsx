@@ -7,6 +7,7 @@ import { TaskItem } from 'app/task-item/task-item';
 import { TTask } from 'types/tasks';
 import { SearchInput } from 'components/SearchInput';
 import { Loader } from 'components/Loader';
+import { Pagination } from 'app/pagination/pagination';
 
 export const TaskList: FC = () => {
   const [filter, setFilter] = useState('');
@@ -25,8 +26,13 @@ export const TaskList: FC = () => {
     return [...taskList].reverse();
   }, [taskList]);
   // TODO: add pagination
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [tasksperPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tasksperPage] = useState(10);
+  const lastTaskIndex = currentPage * tasksperPage;
+  const firstTaskIndex = lastTaskIndex - tasksperPage;
+  const currentTasks = tasks.slice(firstTaskIndex, lastTaskIndex);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const handleSearchSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -95,10 +101,11 @@ export const TaskList: FC = () => {
       <div className={isLoading ? styles.wrapper : ''}>
         <Loader isLoading={isLoading} variant={'circle'}>
           <ul className={styles.tasks}>
-            {tasks && tasks.map((task: TTask) => <TaskItem task={task} key={task.id} />)}
+            {currentTasks && currentTasks.map((task: TTask) => <TaskItem task={task} key={task.id} />)}
           </ul>
         </Loader>
       </div>
+      <Pagination tasksPerPage={tasksperPage} totalTasks={tasks.length} paginate={paginate} currentPage={currentPage} />
     </section>
   );
 };
