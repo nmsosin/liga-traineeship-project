@@ -2,6 +2,7 @@ import { FC, FormEvent, useEffect, useMemo, useState } from 'react';
 import { TStore } from '../../services/reducers/store/store.types';
 import { getSortedTasks, getTaskListData } from '../../services/actions/task-list/taskListActions';
 import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
+import { resetTask } from '../../services/actions/task/taskActions';
 import styles from './styles.module.css';
 import { TaskItem } from 'app/task-item/task-item';
 import { TTask } from 'types/tasks';
@@ -15,6 +16,7 @@ export const TaskList: FC = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getTaskListData());
+    dispatch(resetTask());
   }, [dispatch]);
   const status = useAppSelector((store: TStore) => store.taskList.taskListRequest);
   const [isLoading, setIsLoading] = useState(status);

@@ -5,6 +5,7 @@ import {
   GET_TASK_FAILED,
   GET_TASK_REQUEST,
   GET_TASK_SUCCESS,
+  RESET_TASK,
   UPDATE_TASK_FAILED,
   UPDATE_TASK_REQUEST,
   UPDATE_TASK_SUCCESS,
@@ -54,6 +55,12 @@ export interface IUpdateTaskFailed {
   error: Error;
 }
 
+export interface IResetTask {
+  readonly type: typeof RESET_TASK;
+  currentTaskId: null;
+  currentTask: null;
+}
+
 export type TTaskActions =
   | IGetTaskRequest
   | IGetTaskSuccess
@@ -63,4 +70,5 @@ export type TTaskActions =
   | IDeleteTaskFailed
   | IUpdateTaskRequest
   | IUpdateTaskSuccess
-  | IUpdateTaskFailed;
+  | IUpdateTaskFailed
+  | IResetTask;

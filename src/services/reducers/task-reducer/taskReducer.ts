@@ -5,6 +5,7 @@ import {
   GET_TASK_FAILED,
   GET_TASK_REQUEST,
   GET_TASK_SUCCESS,
+  RESET_TASK,
   UPDATE_TASK_FAILED,
   UPDATE_TASK_REQUEST,
   UPDATE_TASK_SUCCESS,
@@ -13,6 +14,9 @@ import { TTaskActions } from '../../actions/task/task.types';
 import { TInitialTaskState } from './task-reducer.types';
 
 export const initialTaskState: TInitialTaskState = {
+  getTaskRequest: false,
+  getTaskSuccess: false,
+  getTaskFailed: false,
   deleteTaskRequest: false,
   deleteTaskSuccess: false,
   deleteTaskFailed: false,
@@ -96,6 +100,13 @@ export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
         updateTaskRequest: false,
         updateTaskFailed: true,
         error: action.error,
+      };
+    }
+    case RESET_TASK: {
+      return {
+        ...state,
+        currentTask: null,
+        currentTaskId: null,
       };
     }
     default: {

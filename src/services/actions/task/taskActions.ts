@@ -5,6 +5,7 @@ import {
   IGetTaskFailed,
   IGetTaskRequest,
   IGetTaskSuccess,
+  IResetTask,
   IUpdateTaskFailed,
   IUpdateTaskRequest,
   IUpdateTaskSuccess,
@@ -23,6 +24,7 @@ export const DELETE_TASK_FAILED = 'DELETE_TASK_FAILED';
 export const UPDATE_TASK_REQUEST = 'UPDATE_TASK_REQUEST';
 export const UPDATE_TASK_SUCCESS = 'UPDATE_TASK_SUCCESS';
 export const UPDATE_TASK_FAILED = 'UPDATE_TASK_FAILED';
+export const RESET_TASK = 'RESET_TASK';
 
 const getTaskRequest = (): IGetTaskRequest => {
   return {
@@ -82,6 +84,14 @@ const updateTaskFailed = (error: Error): IUpdateTaskFailed => {
   return {
     type: UPDATE_TASK_FAILED,
     error: error,
+  };
+};
+
+export const resetTask = (): IResetTask => {
+  return {
+    type: RESET_TASK,
+    currentTaskId: null,
+    currentTask: null,
   };
 };
 
