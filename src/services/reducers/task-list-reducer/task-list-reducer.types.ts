@@ -7,4 +7,5 @@ export type TInitialTaskListState = {
   addTaskRequest: boolean;
   addTaskFailed: boolean;
   newTask: TTask | null;
+  error: null | Error;
 };

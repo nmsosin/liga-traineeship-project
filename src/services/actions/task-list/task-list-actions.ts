@@ -62,7 +62,7 @@ export const getTaskListData: AppThunk = () => {
   return function (dispatch: AppDispatch) {
     dispatch(getTasksRequest());
     requestGetAll(TASK_LIST_URL_ENDPOINT)
-      .then((res: any) => {
+      .then((res) => {
         if (res) {
           dispatch(getTasksSuccess(res));
         } else {

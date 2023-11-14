@@ -9,7 +9,7 @@ import {
   UPDATE_TASK_FAILED,
   UPDATE_TASK_REQUEST,
   UPDATE_TASK_SUCCESS,
-} from '../../actions/task/taskActions';
+} from '../../actions/task/task-actions';
 import { TTaskActions } from '../../actions/task/task.types';
 import { TInitialTaskState } from './task-reducer.types';
 

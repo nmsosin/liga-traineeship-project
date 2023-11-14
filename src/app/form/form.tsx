@@ -3,21 +3,22 @@ import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
-import { updateTask } from '../../services/actions/task/taskActions';
-import { addNewTask, getTaskListData } from '../../services/actions/task-list/taskListActions';
+import { updateTask } from '../../services/actions/task/task-actions';
+import { addNewTask, getTaskListData } from '../../services/actions/task-list/task-list-actions';
 import { TStore } from '../../services/reducers/store/store.types';
 import styles from './styles.module.css';
 import { TTask } from 'types/tasks';
 import { TaskSubmitForm } from 'app/form/form-validation.types';
 import { validationSchema } from 'app/form/form-validation';
 import { Loader } from 'components/Loader';
+import { getTaskRequestSelector } from 'constants/selector-creators';
 
 export type TFormProps = {
   task: TTask | null;
   taskId: number | null;
 };
 export const Form: FC<TFormProps> = ({ task, taskId }) => {
-  const status = useAppSelector((store: TStore) => store.task.getTaskRequest);
+  const status = useAppSelector(getTaskRequestSelector);
   const [isLoading, setIsLoading] = useState(status);
   useEffect(() => {
     setIsLoading(status);

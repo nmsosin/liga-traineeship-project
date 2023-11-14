@@ -1,14 +1,15 @@
 import { FC, FormEvent, useEffect, useMemo, useState } from 'react';
 import { TStore } from '../../services/reducers/store/store.types';
-import { getSortedTasks, getTaskListData } from '../../services/actions/task-list/taskListActions';
+import { getSortedTasks, getTaskListData } from '../../services/actions/task-list/task-list-actions';
 import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
-import { resetTask } from '../../services/actions/task/taskActions';
+import { resetTask } from '../../services/actions/task/task-actions';
 import styles from './styles.module.css';
 import { TaskItem } from 'app/task-item/task-item';
 import { TTask } from 'types/tasks';
 import { SearchInput } from 'components/SearchInput';
 import { Loader } from 'components/Loader';
 import { Pagination } from 'app/pagination/pagination';
+import { getAllTasksSelector, getTaskListErrorSelector, getTaskListRequestSelector } from 'constants/selector-creators';
 
 export const TaskList: FC = () => {
   const [filter, setFilter] = useState('');
@@ -18,12 +19,13 @@ export const TaskList: FC = () => {
     dispatch(getTaskListData());
     dispatch(resetTask());
   }, [dispatch]);
-  const status = useAppSelector((store: TStore) => store.taskList.taskListRequest);
+  const error = useAppSelector(getTaskListErrorSelector);
+  const status = useAppSelector(getTaskListRequestSelector);
   const [isLoading, setIsLoading] = useState(status);
   useEffect(() => {
     setIsLoading(status);
   }, [status]);
-  const taskList = useAppSelector((store: TStore) => store.taskList.tasks);
+  const taskList = useAppSelector(getAllTasksSelector);
   const tasks = useMemo(() => {
     return [...taskList].reverse();
   }, [taskList]);
@@ -100,6 +102,12 @@ export const TaskList: FC = () => {
         </button>
       </nav>
       <div className={isLoading ? styles.wrapper : ''}>
+        {error && (
+          <div className={styles.errorContainer}>
+            <h3 className={styles.errorTitle}>Oops! Something went wrong</h3>
+            <p className={styles.errorDescription}>{error.message}</p>
+          </div>
+        )}
         <Loader isLoading={isLoading} variant={'circle'}>
           <ul className={styles.tasks}>
             {currentTasks && currentTasks.map((task: TTask) => <TaskItem task={task} key={task.id} />)}

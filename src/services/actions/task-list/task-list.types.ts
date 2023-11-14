@@ -5,7 +5,7 @@ import {
   GET_TASKS_FAILED,
   GET_TASKS_REQUEST,
   GET_TASKS_SUCCESS,
-} from './taskListActions';
+} from './task-list-actions';
 import { TTask } from 'types/tasks';
 
 export interface IAddTaskRequest {

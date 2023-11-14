@@ -9,7 +9,7 @@ import {
   UPDATE_TASK_FAILED,
   UPDATE_TASK_REQUEST,
   UPDATE_TASK_SUCCESS,
-} from './taskActions';
+} from './task-actions';
 import { TTask } from 'types/tasks';
 
 export interface IGetTaskRequest {

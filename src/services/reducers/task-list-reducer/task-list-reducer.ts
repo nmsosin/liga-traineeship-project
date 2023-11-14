@@ -5,7 +5,7 @@ import {
   GET_TASKS_FAILED,
   GET_TASKS_REQUEST,
   GET_TASKS_SUCCESS,
-} from '../../actions/task-list/taskListActions';
+} from '../../actions/task-list/task-list-actions';
 import { TTaskListActions } from '../../actions/task-list/task-list.types';
 import { TInitialTaskListState } from './task-list-reducer.types';
 
@@ -16,6 +16,7 @@ export const initialTaskListState: TInitialTaskListState = {
   addTaskRequest: false,
   addTaskFailed: false,
   newTask: null,
+  error: null,
 };
 
 export const taskListReducer = (state = initialTaskListState, action: TTaskListActions) => {
@@ -40,6 +41,7 @@ export const taskListReducer = (state = initialTaskListState, action: TTaskListA
         ...state,
         taskListRequest: false,
         taskListFailed: true,
+        error: action.error,
       };
     }
     case ADD_TASK_REQUEST: {
@@ -62,6 +64,7 @@ export const taskListReducer = (state = initialTaskListState, action: TTaskListA
         ...state,
         addTaskRequest: false,
         addTaskFailed: true,
+        error: action.error,
       };
     }
     default: {
