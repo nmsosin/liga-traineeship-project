@@ -26,6 +26,7 @@ export const taskListReducer = (state = initialTaskListState, action: TTaskListA
         ...state,
         taskListRequest: true,
         taskListFailed: false,
+        error: null,
       };
     }
     case GET_TASKS_SUCCESS: {
@@ -49,6 +50,7 @@ export const taskListReducer = (state = initialTaskListState, action: TTaskListA
         ...state,
         addTaskRequest: true,
         addTaskFailed: false,
+        error: null,
       };
     }
     case ADD_TASK_SUCCESS: {

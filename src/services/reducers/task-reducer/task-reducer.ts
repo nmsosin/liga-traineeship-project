@@ -37,6 +37,7 @@ export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
         getTaskFailed: false,
         currentTaskId: null,
         currentTask: null,
+        error: null,
       };
     }
     case GET_TASK_SUCCESS: {
@@ -61,6 +62,7 @@ export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
         ...state,
         deleteTaskRequest: true,
         deleteTaskFailed: false,
+        error: null,
       };
     }
     case DELETE_TASK_SUCCESS: {
@@ -84,6 +86,7 @@ export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
         ...state,
         updateTaskRequest: true,
         updateTaskFailed: false,
+        error: null,
       };
     }
     case UPDATE_TASK_SUCCESS: {
@@ -107,6 +110,7 @@ export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
         ...state,
         currentTask: null,
         currentTaskId: null,
+        error: null,
       };
     }
     default: {

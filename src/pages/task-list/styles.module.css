@@ -12,6 +12,29 @@
   gap: 20px;
 }
 
+.searchBar {
+  position: relative;
+}
+
+.searchInput {
+  padding: 4px 20px;
+  border: 1px solid #ad9898;
+  border-radius: 10px;
+}
+
+.resetButton {
+  position: absolute;
+  border: none;
+  background-color: transparent;
+  right: 10px;
+  top: 4px;
+}
+
+.resetIcon {
+  font-size: 14px;
+  color: #ad9898;
+}
+
 .findButton {
   border: 1px solid #AD9898;
   border-radius: 5px;

@@ -1,18 +1,28 @@
-import { FC, FormEvent, useEffect, useMemo, useState } from 'react';
-import { TStore } from '../../services/reducers/store/store.types';
+import React, { ChangeEvent, FC, FormEvent, useEffect, useMemo, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { getSortedTasks, getTaskListData } from '../../services/actions/task-list/task-list-actions';
 import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
 import { resetTask } from '../../services/actions/task/task-actions';
+import {
+  getAllTasksSelector,
+  getTaskListErrorSelector,
+  getTaskListRequestSelector,
+} from '../../constants/selector-creators';
+import { SearchSubmitForm } from './search-form-validation.types';
 import styles from './styles.module.css';
+import { validationSchema } from './search-form-validation';
 import { TaskItem } from 'app/task-item/task-item';
 import { TTask } from 'types/tasks';
-import { SearchInput } from 'components/SearchInput';
 import { Loader } from 'components/Loader';
 import { Pagination } from 'app/pagination/pagination';
-import { getAllTasksSelector, getTaskListErrorSelector, getTaskListRequestSelector } from 'constants/selector-creators';
 
 export const TaskList: FC = () => {
-  const [filter, setFilter] = useState('');
+  const defaultValues = { filter: '' };
+  const { watch, handleSubmit, control, reset, setValue } = useForm<SearchSubmitForm>({
+    defaultValues: defaultValues,
+    resolver: yupResolver(validationSchema),
+  });
   const [sort, setSort] = useState<'all' | 'active' | 'done' | 'important' | 'filter'>('all');
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -37,15 +47,12 @@ export const TaskList: FC = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  const handleSearchSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
+  const onSearchSubmit = (data: SearchSubmitForm) => {
     setSort('filter');
-    dispatch(getSortedTasks({ name_like: filter }));
+    dispatch(getSortedTasks({ name_like: data.filter }));
   };
-  const handleResetClick = () => {
-    setFilter('');
-    setSort('all');
-    dispatch(getTaskListData());
+  const handleFilterChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setValue('filter', evt.target.value);
   };
   const handleSortAll = () => {
     setSort('all');
@@ -68,10 +75,30 @@ export const TaskList: FC = () => {
   };
   return (
     <section>
-      <form className={styles.searchForm} action="submit" onSubmit={handleSearchSubmit}>
-        <SearchInput onChange={setFilter} onReset={handleResetClick} value={filter} />
+      <form className={styles.searchForm} action="submit" onSubmit={handleSubmit(onSearchSubmit)}>
+        <div>
+          <Controller
+            control={control}
+            name="filter"
+            render={({ field, fieldState: { error } }) => (
+              <div className={styles.searchBar}>
+                <input
+                  value={field.value}
+                  onChange={handleFilterChange}
+                  type="text"
+                  placeholder={'> search'}
+                  className={`${styles.searchInput} ${error?.message ? 'is-invalid' : ''}`}
+                />
+                <button className={styles.resetButton} onClick={() => reset()}>
+                  <span className={styles.resetIcon}>X</span>
+                </button>
+                <div className="invalid-feedback">{error?.message}</div>
+              </div>
+            )}
+          />
+        </div>
 
-        <button className={styles.findButton} type={'submit'} disabled={filter.length === 0}>
+        <button className={styles.findButton} type={'submit'} disabled={watch('filter').length === 0}>
           Find
         </button>
       </form>
@@ -111,7 +138,9 @@ export const TaskList: FC = () => {
         <Loader isLoading={isLoading} variant={'circle'}>
           <ul className={styles.tasks}>
             {currentTasks &&
-              currentTasks.map((task: TTask) => <TaskItem task={task} sort={sort} filter={filter} key={task.id} />)}
+              currentTasks.map((task: TTask) => (
+                <TaskItem task={task} sort={sort} filter={watch('filter')} key={task.id} />
+              ))}
           </ul>
         </Loader>
       </div>
