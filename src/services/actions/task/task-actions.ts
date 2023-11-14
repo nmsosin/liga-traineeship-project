@@ -11,9 +11,9 @@ import {
   IUpdateTaskSuccess,
 } from './task.types';
 import { TTask } from 'types/tasks';
-import { AppDispatch, AppThunk } from 'types/requests';
-import { requestDelete, requestGetCurrent, requestUpdate } from 'utils/api';
-import { TASK_URL_ENDPOINT } from 'constants/urlEndpoints';
+import { AppDispatch, AppThunk } from 'src/types/requests';
+import { requestDelete, requestGetCurrent, requestUpdate } from 'src/api/api';
+import { TASK_URL_ENDPOINT } from 'src/constants/urlEndpoints';
 
 export const GET_TASK_REQUEST = 'GET_TASK_REQUEST';
 export const GET_TASK_SUCCESS = 'GET_TASK_SUCCESS';

@@ -1,21 +1,21 @@
-import React, { ChangeEvent, FC, FormEvent, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
-import { getSortedTasks, getTaskListData } from '../../services/actions/task-list/task-list-actions';
-import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
-import { resetTask } from '../../services/actions/task/task-actions';
+import { SearchSubmitForm } from './search-form-validation.types';
+import styles from './styles.module.css';
+import { validationSchema } from './search-form-validation';
+import { getSortedTasks, getTaskListData } from 'src/services/actions/task-list/task-list-actions';
+import { useAppDispatch, useAppSelector } from 'src/services/hooks/hooks';
+import { resetTask } from 'src/services/actions/task/task-actions';
 import {
   getAllTasksSelector,
   getTaskListErrorSelector,
   getTaskListRequestSelector,
-} from '../../constants/selector-creators';
-import { SearchSubmitForm } from './search-form-validation.types';
-import styles from './styles.module.css';
-import { validationSchema } from './search-form-validation';
-import { TaskItem } from 'app/task-item/task-item';
-import { TTask } from 'types/tasks';
-import { Loader } from 'components/Loader';
-import { Pagination } from 'app/pagination/pagination';
+} from 'src/constants/selector-creators';
+import { TaskItem } from 'src/app/task-item/task-item';
+import { TTask } from 'src/types/tasks';
+import { Loader } from 'src/components/Loader';
+import { Pagination } from 'src/app/pagination/pagination';
 
 export const TaskList: FC = () => {
   const defaultValues = { filter: '' };

@@ -1,9 +1,7 @@
-import axios, { Axios, AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { BASE_URL } from 'constants/urlEndpoints';
-import { paths } from 'types/api';
-import { TTask } from 'types/tasks';
-
-// axios requests
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { BASE_URL } from 'src/constants/urlEndpoints';
+import { paths } from 'src/types/api';
+import { TTask } from 'src/types/tasks';
 
 export type GetTasksResponse = paths['/tasks']['get']['responses'][200]['content']['application/json'];
 export type GetCurrentTaskResponse = paths['/tasks/{taskId}']['get']['responses'][200]['content']['application/json'];

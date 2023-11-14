@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import styles from './styles.module.css';
-import { TPaginationProps } from 'app/pagination/pagination.types';
+import { TPaginationProps } from './pagination.types';
 
 export const Pagination: FC<TPaginationProps> = ({ tasksPerPage, totalTasks, paginate, currentPage }) => {
   const pageNumbers: number[] = [];

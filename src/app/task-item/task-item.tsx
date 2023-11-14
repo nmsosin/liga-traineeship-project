@@ -1,19 +1,17 @@
 import { FC, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { v4 } from 'uuid';
-import { deleteTask, updateTask } from '../../services/actions/task/task-actions';
-import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
-import { TStore } from '../../services/reducers/store/store.types';
-import { getSortedTasks, getTaskListData } from '../../services/actions/task-list/task-list-actions';
+import { deleteTask, updateTask } from 'src/services/actions/task/task-actions';
 import styles from './styles.module.css';
-import { Checkbox } from 'components/Checkbox';
-import { booleanMap } from 'utils/mappers';
-import { TTaskItemProps } from 'app/task-item/task-item.types';
+import { TTaskItemProps } from './task-item.types';
+import { useAppDispatch, useAppSelector } from 'src/services/hooks/hooks';
+import { getSortedTasks, getTaskListData } from 'src/services/actions/task-list/task-list-actions';
 import {
   getDeleteTaskRequestSelector,
   getTaskErrorSelector,
   getUpdateTaskRequestSelector,
-} from 'constants/selector-creators';
+} from 'src/constants/selector-creators';
+import { Checkbox } from 'src/components/Checkbox';
+import { booleanMap } from 'src/utils/mappers';
 
 export const TaskItem: FC<TTaskItemProps> = ({ task, sort, filter }) => {
   const { id, name, info, isImportant, isCompleted } = task;
@@ -69,7 +67,7 @@ export const TaskItem: FC<TTaskItemProps> = ({ task, sort, filter }) => {
     <>
       {error && <p>{JSON.stringify(error)}</p>}
       <li
-        key={id ? id : v4()}
+        key={id}
         className={`${styles.listItem} ${isCompleted ? styles.completed : ''} ${isImportant ? styles.important : ''}`}>
         <div className={styles.taskHeader}>
           <h2 className={styles.taskTitle}>

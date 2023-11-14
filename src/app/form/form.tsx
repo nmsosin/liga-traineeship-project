@@ -2,16 +2,15 @@ import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
-import { updateTask } from '../../services/actions/task/task-actions';
-import { addNewTask, getTaskListData } from '../../services/actions/task-list/task-list-actions';
-import { TStore } from '../../services/reducers/store/store.types';
 import styles from './styles.module.css';
-import { TTask } from 'types/tasks';
-import { TaskSubmitForm } from 'app/form/form-validation.types';
-import { validationSchema } from 'app/form/form-validation';
-import { Loader } from 'components/Loader';
+import { TaskSubmitForm } from './form-validation.types';
+import { validationSchema } from './form-validation';
+import { updateTask } from 'src/services/actions/task/task-actions';
+import { addNewTask, getTaskListData } from 'src/services/actions/task-list/task-list-actions';
+import { useAppDispatch, useAppSelector } from 'src/services/hooks/hooks';
 import { getTaskRequestSelector } from 'constants/selector-creators';
+import { Loader } from 'components/Loader';
+import { TTask } from 'types/tasks';
 
 export type TFormProps = {
   task: TTask | null;

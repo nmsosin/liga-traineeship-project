@@ -1,11 +1,11 @@
 import { FC, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getCurrentTask } from '../../services/actions/task/task-actions';
-import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
 import styles from './styles.module.css';
-import { PageContainer } from 'components/PageContainer';
-import { Form } from 'app/form/form';
-import { getCurrentTaskSelector, getTaskErrorSelector } from 'constants/selector-creators';
+import { useAppDispatch, useAppSelector } from 'src/services/hooks/hooks';
+import { getCurrentTask } from 'src/services/actions/task/task-actions';
+import { PageContainer } from 'src/components/PageContainer';
+import { Form } from 'src/app/form/form';
+import { getCurrentTaskSelector, getTaskErrorSelector } from 'src/constants/selector-creators';
 
 export const TaskForm: FC = () => {
   const { id: taskId } = useParams();

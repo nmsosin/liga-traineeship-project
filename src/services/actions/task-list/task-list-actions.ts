@@ -6,9 +6,9 @@ import {
   IGetTasksRequest,
   IGetTasksSuccess,
 } from './task-list.types';
-import { TTask } from 'types/tasks';
-import { requestAdd, requestGetAll } from 'utils/api';
-import { AppDispatch, AppThunk } from 'types/requests';
+import { TTask } from 'src/types/tasks';
+import { requestAdd, requestGetAll } from 'src/api/api';
+import { AppDispatch, AppThunk } from 'src/types/requests';
 import { TASK_LIST_URL_ENDPOINT } from 'constants/urlEndpoints';
 
 export const GET_TASKS_REQUEST = 'GET_TASKS_REQUEST';

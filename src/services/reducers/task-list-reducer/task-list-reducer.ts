@@ -1,3 +1,4 @@
+import { TInitialTaskListState } from './task-list-reducer.types';
 import {
   ADD_TASK_FAILED,
   ADD_TASK_REQUEST,
@@ -5,9 +6,8 @@ import {
   GET_TASKS_FAILED,
   GET_TASKS_REQUEST,
   GET_TASKS_SUCCESS,
-} from '../../actions/task-list/task-list-actions';
-import { TTaskListActions } from '../../actions/task-list/task-list.types';
-import { TInitialTaskListState } from './task-list-reducer.types';
+} from 'src/services/actions/task-list/task-list-actions';
+import { TTaskListActions } from 'src/services/actions/task-list/task-list.types';
 
 export const initialTaskListState: TInitialTaskListState = {
   taskListRequest: false,

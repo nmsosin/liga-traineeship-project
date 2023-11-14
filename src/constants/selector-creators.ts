@@ -1,4 +1,4 @@
-import { TStore } from '../services/reducers/store/store.types';
+import { TStore } from 'src/services/reducers/store/store.types';
 
 export const getUpdateTaskRequestSelector = (store: TStore) => store.task.updateTaskRequest;
 export const getDeleteTaskRequestSelector = (store: TStore) => store.task.deleteTaskRequest;

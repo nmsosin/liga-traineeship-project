@@ -1,3 +1,4 @@
+import { TInitialTaskState } from './task-reducer.types';
 import {
   DELETE_TASK_FAILED,
   DELETE_TASK_REQUEST,
@@ -9,9 +10,8 @@ import {
   UPDATE_TASK_FAILED,
   UPDATE_TASK_REQUEST,
   UPDATE_TASK_SUCCESS,
-} from '../../actions/task/task-actions';
-import { TTaskActions } from '../../actions/task/task.types';
-import { TInitialTaskState } from './task-reducer.types';
+} from 'src/services/actions/task/task-actions';
+import { TTaskActions } from 'src/services/actions/task/task.types';
 
 export const initialTaskState: TInitialTaskState = {
   getTaskRequest: false,
