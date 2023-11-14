@@ -4,6 +4,7 @@
   padding: 40px 20px;
   border: 2px solid #ad9898;
   border-radius: 20px;
+  gap: 20px;
 }
 
 .formTitle {
@@ -17,6 +18,13 @@
 .label {
   color: #ad9898;
   font-size: 18px;
+  padding-bottom: 10px;
+}
+
+.checkboxes {
+  display: flex;
+  gap: 40px;
+  padding-top: 20px;
 }
 
 .saveButton {

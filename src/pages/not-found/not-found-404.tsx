@@ -1,12 +1,15 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
+import styles from './styles.module.css';
 
 export const NotFound404: FC = () => {
   return (
-    <>
-      <h2>404 Page not found</h2>
-      <p>Please, check the address</p>
-      <NavLink to={'/'}>Back on track</NavLink>
-    </>
+    <div className={styles.container}>
+      <h2 className={styles.title}>404 Page not found</h2>
+      <p className={styles.text}>Please, check the address</p>
+      <NavLink className={styles.backButton} to={'/'}>
+        Back on track
+      </NavLink>
+    </div>
   );
 };

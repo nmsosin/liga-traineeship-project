@@ -1,12 +1,6 @@
-import { FC, MouseEventHandler } from 'react';
+import { FC } from 'react';
 import styles from './styles.module.css';
-
-type TPaginationProps = {
-  tasksPerPage: number;
-  totalTasks: number;
-  paginate: (pageNumber: number) => void;
-  currentPage: number;
-};
+import { TPaginationProps } from 'app/pagination/pagination.types';
 
 export const Pagination: FC<TPaginationProps> = ({ tasksPerPage, totalTasks, paginate, currentPage }) => {
   const pageNumbers: number[] = [];

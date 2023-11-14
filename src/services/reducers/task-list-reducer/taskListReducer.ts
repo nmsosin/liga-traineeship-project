@@ -5,18 +5,9 @@ import {
   GET_TASKS_FAILED,
   GET_TASKS_REQUEST,
   GET_TASKS_SUCCESS,
-  TTaskListActions,
-} from '../actions/taskListActions';
-import { TTask } from 'types/tasks';
-
-export type TInitialTaskListState = {
-  taskListRequest: boolean;
-  taskListFailed: boolean;
-  tasks: TTask[];
-  addTaskRequest: boolean;
-  addTaskFailed: boolean;
-  newTask: TTask | null;
-};
+} from '../../actions/task-list/taskListActions';
+import { TTaskListActions } from '../../actions/task-list/task-list.types';
+import { TInitialTaskListState } from './task-list-reducer.types';
 
 export const initialTaskListState: TInitialTaskListState = {
   taskListRequest: false,

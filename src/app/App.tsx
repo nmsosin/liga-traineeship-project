@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import styles from './styles.module.css';
 import { TaskForm } from 'pages/task-form/task-form';

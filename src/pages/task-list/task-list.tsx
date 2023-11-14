@@ -1,6 +1,6 @@
 import { FC, FormEvent, useEffect, useMemo, useState } from 'react';
-import { TStore } from '../../services/reducers';
-import { getSortedTasks, getTaskListData } from '../../services/actions/taskListActions';
+import { TStore } from '../../services/reducers/store/store.types';
+import { getSortedTasks, getTaskListData } from '../../services/actions/task-list/taskListActions';
 import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
 import styles from './styles.module.css';
 import { TaskItem } from 'app/task-item/task-item';
@@ -25,7 +25,6 @@ export const TaskList: FC = () => {
   const tasks = useMemo(() => {
     return [...taskList].reverse();
   }, [taskList]);
-  // TODO: add pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [tasksperPage] = useState(10);
   const lastTaskIndex = currentPage * tasksperPage;

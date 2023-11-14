@@ -1,18 +1,14 @@
 import { FC, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { v4 } from 'uuid';
-import { deleteTask, updateTask } from '../../services/actions/taskActions';
+import { deleteTask, updateTask } from '../../services/actions/task/taskActions';
 import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
-import { TStore } from '../../services/reducers';
-import { getTaskListData } from '../../services/actions/taskListActions';
+import { TStore } from '../../services/reducers/store/store.types';
+import { getTaskListData } from '../../services/actions/task-list/taskListActions';
 import styles from './styles.module.css';
-import { TTask } from 'types/tasks';
 import { Checkbox } from 'components/Checkbox';
 import { booleanMap } from 'utils/mappers';
-
-type TTaskItemProps = {
-  task: TTask;
-};
+import { TTaskItemProps } from 'app/task-item/task-item.types';
 
 export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
   const { id, name, info, isImportant, isCompleted } = task;
@@ -29,21 +25,21 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
     dispatch(deleteTask(taskId));
     setTimeout(() => {
       dispatch(getTaskListData());
-    }, 0);
+    }, 100);
   };
   const handleImportanceChange = () => {
     setImportance(!importance);
     dispatch(updateTask(id, { isImportant: !importance }));
     setTimeout(() => {
       dispatch(getTaskListData());
-    }, 0);
+    }, 100);
   };
   const handleStatusChange = () => {
     setStatus(!status);
     dispatch(updateTask(id, { isCompleted: !status }));
     setTimeout(() => {
       dispatch(getTaskListData());
-    }, 0);
+    }, 100);
   };
   return (
     <li

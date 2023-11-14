@@ -1,98 +1,147 @@
-import { FC, FormEvent, FormEventHandler, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { v1 } from 'uuid';
-import { useForm } from '../../services/hooks/use-form';
-import { updateTask } from '../../services/actions/taskActions';
-import { TStore } from '../../services/reducers';
-import { addNewTask, getTaskListData } from '../../services/actions/taskListActions';
-import { useAppDispatch } from '../../services/hooks/hooks';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { getCurrentTask, updateTask } from '../../services/actions/task/taskActions';
+import { TStore } from '../../services/reducers/store/store.types';
+import { addNewTask, getTaskListData } from '../../services/actions/task-list/taskListActions';
+import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
 import styles from './styles.module.css';
 import { PageContainer } from 'components/PageContainer';
-import { TextField } from 'components/TextField';
-import { Checkbox } from 'components/Checkbox';
-
-import { TTask } from 'types/tasks';
+import { validationSchema } from 'pages/task-form/task-form-validation';
+import { TaskSubmitForm } from 'pages/task-form/task-form-validation.types';
 
 export const TaskForm: FC = () => {
   const { id: taskId } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const tasks = useSelector((store: TStore) => store.taskList.tasks);
-  const task = taskId
-    ? tasks.filter((task) => Number(task.id) === Number(taskId))[0]
-    : { name: '', info: '', isImportant: false, isCompleted: false, _id: v1() };
-  const { id, name, info, isImportant, isCompleted } = task as TTask;
-  const { values, handleChange } = task
-    ? useForm({
-        name: name,
-        info: info,
-      })
-    : useForm({
-        name: '',
-        info: '',
-      });
-  const [importance, setImportance] = useState(isImportant);
-  const [status, setStatus] = useState(isCompleted);
-  const handleImportanceChange = () => {
-    setImportance(!importance);
+  useEffect(() => {
+    if (taskId) {
+      dispatch(getCurrentTask(taskId));
+    }
+  }, [taskId]);
+  const currentTask = useAppSelector((store: TStore) => store.task.currentTask);
+
+  const defaultValues: TaskSubmitForm =
+    taskId && currentTask !== null
+      ? currentTask
+      : {
+          name: '',
+          info: '',
+          isImportant: false,
+          isCompleted: false,
+        };
+  const { watch, handleSubmit, control, setValue } = useForm<TaskSubmitForm>({
+    defaultValues: defaultValues,
+    resolver: yupResolver(validationSchema),
+  });
+  const handleNameChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setValue('name', evt.target.value);
   };
-  const handleStatusChange = () => {
-    setStatus(!status);
+  const handleInfoChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setValue('info', evt.target.value);
   };
-  const handleSubmitChanges = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    console.log(evt);
-    if (id) {
-      dispatch(
-        updateTask(id, {
-          _id: id,
-          name: values.name,
-          info: values.info,
-          isImportant: importance,
-          isCompleted: status,
-        })
-      );
+
+  const handleImportanceChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setValue('isImportant', evt.target.checked);
+  };
+  const handleStatusChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setValue('isCompleted', evt.target.checked);
+  };
+  const onSubmit = (data: TaskSubmitForm) => {
+    if (taskId) {
+      dispatch(updateTask(taskId, JSON.stringify(data, null, 2)));
     } else {
-      dispatch(
-        addNewTask({
-          _id: id,
-          name: values.name,
-          info: values.info,
-          isImportant: importance,
-          isCompleted: status,
-        })
-      );
+      dispatch(addNewTask(JSON.stringify(data, null, 2)));
     }
     dispatch(getTaskListData());
     navigate(-1);
   };
   return (
     <PageContainer>
-      <form className={styles.form} onSubmit={handleSubmitChanges}>
-        <h2 className={styles.formTitle}>{id ? 'Edit task' : 'Add new task'}</h2>
-        <TextField
-          label={'Task title'}
-          name={'name'}
-          placeholder={'Go to the mall'}
-          containerClassName={styles.label}
-          inputType={'text'}
-          value={values.name}
-          onChange={handleChange}
-          errorText={''}
-        />
-        <TextField
-          label={'Additional information'}
-          name={'info'}
-          placeholder={'Buy some new clothes'}
-          containerClassName={styles.label}
-          inputType={'text'}
-          value={values.info}
-          onChange={handleChange}
-          errorText={''}
-        />
-        <Checkbox id={id} label={'important'} checked={importance} onChange={handleImportanceChange} disabled={false} />
-        <Checkbox id={id} label={'done'} checked={status} onChange={handleStatusChange} disabled={false} />
+      <h2 className={styles.formTitle}>{taskId ? 'Edit task' : 'Add new task'}</h2>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label className={styles.label}>Task title</label>
+          <Controller
+            control={control}
+            name="name"
+            render={({ field, fieldState: { error } }) => (
+              <div>
+                <input
+                  value={field.value}
+                  onChange={handleNameChange}
+                  type="text"
+                  placeholder={'> Add task title [ up to 100 characters ]'}
+                  className={`form-control ${error?.message ? 'is-invalid' : ''}`}
+                />
+                <div className="invalid-feedback">{error?.message}</div>
+              </div>
+            )}
+          />
+        </div>
+
+        <div>
+          <label className={styles.label}>Task description</label>
+          <Controller
+            control={control}
+            name="info"
+            render={({ field, fieldState: { error } }) => (
+              <div>
+                <input
+                  value={field.value}
+                  onChange={handleInfoChange}
+                  type="text"
+                  placeholder={'> Add some more information [ up to 500 characters ]'}
+                  className={`form-control ${error?.message ? 'is-invalid' : ''}`}
+                />
+                <div className="invalid-feedback">{error?.message}</div>
+              </div>
+            )}
+          />
+        </div>
+
+        <div className={styles.checkboxes}>
+          <Controller
+            control={control}
+            name="isImportant"
+            render={({ field, fieldState: { error } }) => (
+              <div className="form-group form-check">
+                <input
+                  id={'isImportant'}
+                  checked={field.value}
+                  onChange={handleImportanceChange}
+                  type="checkbox"
+                  disabled={watch('isCompleted')}
+                  className={`form-check-input ${error?.message ? 'is-invalid' : ''}`}
+                />
+                <label htmlFor="isImportant" className="form-check-label">
+                  important
+                </label>
+                <div className="invalid-feedback">{error?.message}</div>
+              </div>
+            )}
+          />
+          <Controller
+            control={control}
+            name="isCompleted"
+            render={({ field, fieldState: { error } }) => (
+              <div className="form-group form-check">
+                <input
+                  id={'isCompleted'}
+                  checked={field.value}
+                  onChange={handleStatusChange}
+                  type="checkbox"
+                  className={`form-check-input ${error?.message ? 'is-invalid' : ''}`}
+                />
+                <label htmlFor="isCompleted" className="form-check-label">
+                  done
+                </label>
+                <div className="invalid-feedback">{error?.message}</div>
+              </div>
+            )}
+          />
+        </div>
         <button className={styles.saveButton} type={'submit'}>
           Save
         </button>

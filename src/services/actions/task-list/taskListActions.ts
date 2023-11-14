@@ -1,3 +1,11 @@
+import {
+  IAddTaskFailed,
+  IAddTaskRequest,
+  IAddTaskSuccess,
+  IGetTasksFailed,
+  IGetTasksRequest,
+  IGetTasksSuccess,
+} from './task-list.types';
 import { TTask } from 'types/tasks';
 import { requestAdd, requestGetAll } from 'utils/api';
 import { AppDispatch, AppThunk } from 'types/requests';
@@ -9,34 +17,6 @@ export const GET_TASKS_FAILED = 'GET_TASKS_FAILED';
 export const ADD_TASK_REQUEST = 'ADD_TASK_REQUEST';
 export const ADD_TASK_SUCCESS = 'ADD_TASK_SUCCESS';
 export const ADD_TASK_FAILED = 'ADD_TASK_FAILED';
-
-interface IAddTaskRequest {
-  readonly type: typeof ADD_TASK_REQUEST;
-}
-
-interface IAddTaskSuccess {
-  readonly type: typeof ADD_TASK_SUCCESS;
-  payload: TTask;
-}
-
-interface IAddTaskFailed {
-  readonly type: typeof ADD_TASK_FAILED;
-  error: Error;
-}
-
-interface IGetTasksRequest {
-  readonly type: typeof GET_TASKS_REQUEST;
-}
-
-interface IGetTasksSuccess {
-  readonly type: typeof GET_TASKS_SUCCESS;
-  payload: TTask[];
-}
-
-interface IGetTasksFailed {
-  readonly type: typeof GET_TASKS_FAILED;
-  error: Error;
-}
 
 const getTasksRequest = (): IGetTasksRequest => {
   return {
@@ -78,21 +58,12 @@ const addTaskFailed = (error: Error): IAddTaskFailed => {
   };
 };
 
-export type TTaskListActions =
-  | IGetTasksRequest
-  | IGetTasksSuccess
-  | IGetTasksFailed
-  | IAddTaskRequest
-  | IAddTaskSuccess
-  | IAddTaskFailed;
-
 export const getTaskListData: AppThunk = () => {
   return function (dispatch: AppDispatch) {
     dispatch(getTasksRequest());
     requestGetAll(TASK_LIST_URL_ENDPOINT)
       .then((res: any) => {
         if (res) {
-          console.log('axios res', res);
           dispatch(getTasksSuccess(res));
         } else {
           dispatch(getTasksFailed(new Error()));
@@ -108,9 +79,8 @@ export const getSortedTasks: AppThunk = (params) => {
   return function (dispatch: AppDispatch) {
     dispatch(getTasksRequest());
     requestGetAll(TASK_LIST_URL_ENDPOINT, { params })
-      .then((res: any) => {
+      .then((res) => {
         if (res) {
-          console.log('axios res', res);
           dispatch(getTasksSuccess(res));
         } else {
           dispatch(getTasksFailed(new Error()));
@@ -125,13 +95,6 @@ export const getSortedTasks: AppThunk = (params) => {
 export const addNewTask: AppThunk = (newTask: TTask) => {
   return function (dispatch: AppDispatch) {
     dispatch(addTaskRequest());
-    // request(TASK_LIST_URL_ENDPOINT, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(newTask),
-    // })
     requestAdd(TASK_LIST_URL_ENDPOINT, newTask, {
       headers: {
         'Content-Type': 'application/json',

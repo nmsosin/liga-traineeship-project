@@ -1,7 +1,6 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
-import { SearchInput } from 'components/SearchInput';
 export const AppHeader: FC = () => {
   return (
     <header className={styles.headerWrapper}>

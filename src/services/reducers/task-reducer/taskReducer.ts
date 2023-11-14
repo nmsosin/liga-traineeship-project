@@ -1,31 +1,16 @@
 import {
-  CHANGE_TASK_IMPORTANCE,
-  CHANGE_TASK_STATUS,
   DELETE_TASK_FAILED,
   DELETE_TASK_REQUEST,
   DELETE_TASK_SUCCESS,
   GET_TASK_FAILED,
   GET_TASK_REQUEST,
   GET_TASK_SUCCESS,
-  TTaskActions,
   UPDATE_TASK_FAILED,
   UPDATE_TASK_REQUEST,
   UPDATE_TASK_SUCCESS,
-} from '../actions/taskActions';
-import { TTask } from 'types/tasks';
-
-export type TInitialTaskState = {
-  deleteTaskRequest: boolean;
-  deleteTaskSuccess: boolean;
-  deleteTaskFailed: boolean;
-  updateTaskRequest: boolean;
-  updateTaskSuccess: boolean;
-  updateTaskFailed: boolean;
-  currentTask: TTask | null;
-  currentTaskId: number | null;
-  tasks: TTask[];
-  error: Error | null;
-};
+} from '../../actions/task/taskActions';
+import { TTaskActions } from '../../actions/task/task.types';
+import { TInitialTaskState } from './task-reducer.types';
 
 export const initialTaskState: TInitialTaskState = {
   deleteTaskRequest: false,
@@ -36,7 +21,6 @@ export const initialTaskState: TInitialTaskState = {
   updateTaskFailed: false,
   currentTask: null,
   currentTaskId: null,
-  tasks: [],
   error: null,
 };
 
@@ -47,6 +31,8 @@ export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
         ...state,
         getTaskRequest: true,
         getTaskFailed: false,
+        currentTaskId: null,
+        currentTask: null,
       };
     }
     case GET_TASK_SUCCESS: {
@@ -54,6 +40,7 @@ export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
         ...state,
         getTaskRequest: false,
         getTaskFailed: false,
+        currentTaskId: action.id,
         currentTask: action.payload,
       };
     }
@@ -109,30 +96,6 @@ export const taskReducer = (state = initialTaskState, action: TTaskActions) => {
         updateTaskRequest: false,
         updateTaskFailed: true,
         error: action.error,
-      };
-    }
-    case CHANGE_TASK_IMPORTANCE: {
-      const stateCopy = { ...state };
-      const task = stateCopy.tasks.find((task) => {
-        return Number(task.id) === Number(action.id);
-      });
-      if (task) {
-        task.isImportant = action.payload;
-      }
-      return {
-        ...stateCopy,
-      };
-    }
-    case CHANGE_TASK_STATUS: {
-      const stateCopy = { ...state };
-      const task = stateCopy.tasks.find((task) => {
-        return Number(task.id) === Number(action.id);
-      });
-      if (task) {
-        task.isCompleted = action.payload;
-      }
-      return {
-        ...stateCopy,
       };
     }
     default: {
