@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { AppHeader } from './app-header/app-header';
 import styles from './styles.module.css';
-import { TaskForm } from 'pages/task-form/task-form';
-import { TaskList } from 'pages/task-list/task-list';
-import { NotFound404 } from 'pages/not-found/not-found-404';
-import { PageContainer } from 'components/PageContainer';
-import { AppHeader } from 'app/app-header/app-header';
-import { ADD_TASK_PAGE_ROUTE, EDIT_TASK_PAGE_ROUTE, MAIN_PAGE_ROUTE } from 'constants/routes';
+import { TaskForm } from 'src/pages/task-form/task-form';
+import { TaskList } from 'src/pages/task-list/task-list';
+import { NotFound404 } from 'src/pages/not-found/not-found-404';
+import { PageContainer } from 'src/components/PageContainer';
+import { ADD_TASK_PAGE_ROUTE, EDIT_TASK_PAGE_ROUTE, MAIN_PAGE_ROUTE } from 'src/constants/routes';
 
 export const App: FC = () => {
   return (

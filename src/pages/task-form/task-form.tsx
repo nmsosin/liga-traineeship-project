@@ -1,89 +1,34 @@
-import { FC, FormEvent, FormEventHandler, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { v1 } from 'uuid';
-import { useForm } from '../../services/hooks/use-form';
-import { ADD_TASK, UPDATE_TASK } from '../../services/actions/taskActions';
+import { FC, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import styles from './styles.module.css';
-import { PageContainer } from 'components/PageContainer';
-import { TextField } from 'components/TextField';
-import { Checkbox } from 'components/Checkbox';
-import { mockTasks } from 'mocks/mockTasks';
-import { TTask } from 'types/tasks';
+import { useAppDispatch, useAppSelector } from 'src/services/hooks/hooks';
+import { getCurrentTask } from 'src/services/actions/task/task-actions';
+import { PageContainer } from 'src/components/PageContainer';
+import { Form } from 'src/app/form/form';
+import { getCurrentTaskSelector, getTaskErrorSelector } from 'src/constants/selector-creators';
 
 export const TaskForm: FC = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const task = id
-    ? mockTasks.filter((task) => task._id === id)[0]
-    : { name: '', info: '', isImportant: false, isCompleted: false, _id: v1() };
-  const { _id, name, info, isImportant, isCompleted } = task as TTask;
-  const { values, handleChange } = task
-    ? useForm({
-        name: name,
-        info: info,
-      })
-    : useForm({
-        name: '',
-        info: '',
-      });
-  const [importance, setImportance] = useState(isImportant);
-  const handleImportanceChange = () => {
-    setImportance(!importance);
-  };
-  const handleSubmitChanges = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    console.log(evt);
-    if (id) {
-      dispatch({
-        type: UPDATE_TASK,
-        id: _id,
-        payload: { name: values.name, info: values.info, isImportant: importance },
-      });
-    } else {
-      dispatch({
-        type: ADD_TASK,
-        payload: { _id: _id, name: values.name, info: values.info, isImportant: importance, isCompleted: isCompleted },
-      });
+  const { id: taskId } = useParams();
+  const dispatch = useAppDispatch();
+  const currentTask = useAppSelector(getCurrentTaskSelector);
+  const error = useAppSelector(getTaskErrorSelector);
+  useEffect(() => {
+    if (taskId) {
+      dispatch(getCurrentTask(taskId));
     }
-    navigate(-1);
-  };
+  }, [dispatch]);
+
   return (
     <PageContainer>
-      <form className={styles.form} onSubmit={handleSubmitChanges}>
-        <h2 className={styles.formTitle}>{id ? 'Edit task' : 'Add new task'}</h2>
-        <TextField
-          label={'Task title'}
-          name={'name'}
-          placeholder={'Go to the mall'}
-          containerClassName={styles.label}
-          inputType={'text'}
-          value={values.name}
-          onChange={handleChange}
-          errorText={''}
-        />
-        <TextField
-          label={'Additional information'}
-          name={'info'}
-          placeholder={'Buy some new clothes'}
-          containerClassName={styles.label}
-          inputType={'text'}
-          value={values.info}
-          onChange={handleChange}
-          errorText={''}
-        />
-        <Checkbox
-          id={_id}
-          label={'important'}
-          checked={importance}
-          onChange={handleImportanceChange}
-          disabled={false}
-        />
-        <button className={styles.saveButton} type={'submit'}>
-          Save
-        </button>
-      </form>
+      <h2 className={styles.formTitle}>{taskId ? 'Edit task' : 'Add new task'}</h2>
+      {!error && currentTask && <Form task={currentTask} taskId={Number(taskId)} />}
+      {!error && !currentTask && <Form task={null} taskId={Number(null)} />}
+      {error && (
+        <div className={styles.errorContainer}>
+          <h3 className={styles.errorTitle}>Oops! Something went wrong</h3>
+          <p className={styles.errorDescription}>{error.message}</p>
+        </div>
+      )}
     </PageContainer>
   );
 };
