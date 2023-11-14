@@ -110,7 +110,8 @@ export const TaskList: FC = () => {
         )}
         <Loader isLoading={isLoading} variant={'circle'}>
           <ul className={styles.tasks}>
-            {currentTasks && currentTasks.map((task: TTask) => <TaskItem task={task} key={task.id} />)}
+            {currentTasks &&
+              currentTasks.map((task: TTask) => <TaskItem task={task} sort={sort} filter={filter} key={task.id} />)}
           </ul>
         </Loader>
       </div>

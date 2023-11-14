@@ -4,7 +4,7 @@ import { v4 } from 'uuid';
 import { deleteTask, updateTask } from '../../services/actions/task/task-actions';
 import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
 import { TStore } from '../../services/reducers/store/store.types';
-import { getTaskListData } from '../../services/actions/task-list/task-list-actions';
+import { getSortedTasks, getTaskListData } from '../../services/actions/task-list/task-list-actions';
 import styles from './styles.module.css';
 import { Checkbox } from 'components/Checkbox';
 import { booleanMap } from 'utils/mappers';
@@ -15,7 +15,7 @@ import {
   getUpdateTaskRequestSelector,
 } from 'constants/selector-creators';
 
-export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
+export const TaskItem: FC<TTaskItemProps> = ({ task, sort, filter }) => {
   const { id, name, info, isImportant, isCompleted } = task;
   const [importance, setImportance] = useState(booleanMap(isImportant));
   const [status, setStatus] = useState(booleanMap(isCompleted));
@@ -27,24 +27,42 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
   useEffect(() => {
     setIsLoading(updateRequestStatus || deleteRequestStatus);
   }, [updateRequestStatus, deleteRequestStatus]);
-  const handleDeleteTask = (taskId: number) => {
+  const getUpdateSortedTasks = (sort: string, filter?: string) => {
+    switch (sort) {
+      case 'filter':
+        return getSortedTasks({ name_like: filter });
+        break;
+      case 'active':
+        return getSortedTasks({ isCompleted: false || 'false' || undefined });
+        break;
+      case 'done':
+        return getSortedTasks({ isCompleted: true || 'true' });
+        break;
+      case 'important':
+        return getSortedTasks({ isImportant: true || 'true' });
+        break;
+      default:
+        return getTaskListData();
+    }
+  };
+  const handleDeleteTask = (taskId: number, sort: string, filter?: string) => {
     dispatch(deleteTask(taskId));
     setTimeout(() => {
-      dispatch(getTaskListData());
+      dispatch(getUpdateSortedTasks(sort, filter));
     }, 100);
   };
-  const handleImportanceChange = () => {
+  const handleImportanceChange = (sort: string, filter?: string) => {
     setImportance(!importance);
     dispatch(updateTask(id, { isImportant: !importance }));
     setTimeout(() => {
-      dispatch(getTaskListData());
+      dispatch(getUpdateSortedTasks(sort, filter));
     }, 100);
   };
-  const handleStatusChange = () => {
+  const handleStatusChange = (sort: string, filter?: string) => {
     setStatus(!status);
     dispatch(updateTask(id, { isCompleted: !status }));
     setTimeout(() => {
-      dispatch(getTaskListData());
+      dispatch(getUpdateSortedTasks(sort, filter));
     }, 100);
   };
   return (
@@ -91,7 +109,7 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
                 />
               </svg>
             </NavLink>
-            <button className={styles.deleteButton} type={'button'} onClick={() => handleDeleteTask(id)}>
+            <button className={styles.deleteButton} type={'button'} onClick={() => handleDeleteTask(id, sort, filter)}>
               <svg width="40" height="40" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="45" height="45" rx="22.5" fill="#F3F0EC" />
                 <path
@@ -116,14 +134,14 @@ export const TaskItem: FC<TTaskItemProps> = ({ task }) => {
             id={id}
             label={'important'}
             checked={importance}
-            onChange={isLoading ? undefined : handleImportanceChange}
+            onChange={isLoading ? undefined : () => handleImportanceChange(sort, filter)}
             disabled={isLoading || status}
           />
           <Checkbox
             id={id}
             label={'done'}
             checked={status}
-            onChange={isLoading ? undefined : handleStatusChange}
+            onChange={isLoading ? undefined : () => handleStatusChange(sort, filter)}
             disabled={isLoading}
           />
         </div>
