@@ -45,7 +45,7 @@ export const TaskList: FC = () => {
   const lastTaskIndex = currentPage * tasksperPage;
   const firstTaskIndex = lastTaskIndex - tasksperPage;
   const currentTasks = tasks.slice(firstTaskIndex, lastTaskIndex);
-  const [searchParams, setSearchParams] = useSearchParams('');
+  const [_, setSearchParams] = useSearchParams('');
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
