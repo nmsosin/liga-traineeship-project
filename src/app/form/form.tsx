@@ -52,12 +52,14 @@ export const Form: FC<TFormProps> = ({ task, taskId }) => {
   };
   const onSubmit = (data: TaskSubmitForm) => {
     if (taskId) {
-      dispatch(updateTask(taskId, JSON.stringify(data, null, 2)));
+      dispatch(updateTask(taskId, data));
     } else {
-      dispatch(addNewTask(JSON.stringify(data, null, 2)));
+      dispatch(addNewTask(data));
     }
-    dispatch(getTaskListData());
-    navigate(-1);
+    setTimeout(() => {
+      dispatch(getTaskListData());
+      navigate(-1);
+    }, 100);
   };
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>

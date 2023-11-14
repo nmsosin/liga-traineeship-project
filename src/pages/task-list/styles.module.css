@@ -36,6 +36,7 @@
 }
 
 .findButton {
+  height: 35px;
   border: 1px solid #AD9898;
   border-radius: 5px;
   background-color: #F3F0EC;
