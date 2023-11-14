@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './styles.module.css';
-import { SearchInput } from 'components/SearchInput';
 export const AppHeader: FC = () => {
   return (
     <header className={styles.headerWrapper}>
@@ -22,19 +21,6 @@ export const AppHeader: FC = () => {
         </svg>
         <h1 className={styles.headerTitle}>Todo list</h1>
       </NavLink>
-      <form className={styles.searchForm} action="submit">
-        <SearchInput
-          onChange={() => {
-            console.log('1');
-          }}
-          value={''}
-        />
-
-        <button className={styles.findButton} type={'submit'}>
-          Find
-        </button>
-      </form>
-
       <NavLink to={'/task-form'} className={`${styles.navLink} ${styles.addButton}`}>
         Add new task
       </NavLink>

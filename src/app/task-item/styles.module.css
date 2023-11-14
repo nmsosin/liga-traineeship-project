@@ -4,6 +4,24 @@
   border-radius: 20px;
 }
 
+.important {
+  border: 2px solid #d04a4a;
+}
+
+.important .taskTitle {
+  color: #d04a4a;
+}
+
+.completed {
+  text-decoration: line-through;
+  border: 2px solid #ad9898;
+  color: rgba(173, 152, 152, 0.5);
+}
+
+.completed .taskTitle {
+  color: rgba(173, 152, 152, 0.5);
+}
+
 .taskHeader {
   display: flex;
   justify-content: space-between;
@@ -16,11 +34,13 @@
   gap: 10px;
 }
 
-.addButton:hover {
+.editButton:hover {
   transform: scale(1.1);
 }
 
 .taskTitle {
+  word-wrap: break-word;
+  max-width: 400px;
   font-size: 28px;
   color: #AD9898;
   position: relative;
@@ -29,11 +49,15 @@
 }
 
 .taskDescription {
+  word-wrap: break-word;
+  max-width: 500px;
   margin: 0;
   padding-bottom: 40px;
 }
 
 .taskId {
+  display: inline-block;
+  width: 300px;
   position: absolute;
   top: 0;
   left: 0;
