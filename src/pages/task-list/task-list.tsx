@@ -2,6 +2,7 @@ import React, { ChangeEvent, FC, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useSearchParams } from 'react-router-dom';
+import { Box } from '@mui/material';
 import { SearchSubmitForm } from './search-form-validation.types';
 import styles from './styles.module.css';
 import { validationSchema } from './search-form-validation';
@@ -17,6 +18,18 @@ import { TaskItem } from 'src/app/task-item/task-item';
 import { TTask } from 'src/types/tasks';
 import { Loader } from 'src/components/Loader';
 import { Pagination } from 'src/app/pagination/pagination';
+import {
+  StyledButton,
+  StyledErrorDescription,
+  StyledErrorTitle,
+  StyledInvalidInputText,
+  StyledResetButton,
+  StyledSearchForm,
+  StyledSortBar,
+  StyledSortTab,
+  StyledTaskList,
+  StyledTextInput,
+} from 'src/pages/task-list/styled.task-list';
 
 export const TaskList: FC = () => {
   const defaultValues = { filter: '' };
@@ -41,9 +54,9 @@ export const TaskList: FC = () => {
     return [...taskList].reverse();
   }, [taskList]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [tasksperPage] = useState(10);
-  const lastTaskIndex = currentPage * tasksperPage;
-  const firstTaskIndex = lastTaskIndex - tasksperPage;
+  const [tasksPerPage] = useState(10);
+  const lastTaskIndex = currentPage * tasksPerPage;
+  const firstTaskIndex = lastTaskIndex - tasksPerPage;
   const currentTasks = tasks.slice(firstTaskIndex, lastTaskIndex);
   const [_, setSearchParams] = useSearchParams('');
 
@@ -84,76 +97,66 @@ export const TaskList: FC = () => {
   };
   return (
     <section>
-      <form className={styles.searchForm} action="submit" onSubmit={handleSubmit(onSearchSubmit)}>
+      <StyledSearchForm action="submit" onSubmit={handleSubmit(onSearchSubmit)}>
         <div>
           <Controller
             control={control}
             name="filter"
             render={({ field, fieldState: { error } }) => (
-              <div className={styles.searchBar}>
-                <input
+              <Box position={'relative'}>
+                <StyledTextInput
                   value={field.value}
                   onChange={handleFilterChange}
                   type="text"
                   placeholder={'> search'}
-                  className={`${styles.searchInput} ${error?.message ? 'is-invalid' : ''}`}
                 />
-                <button type={'reset'} className={styles.resetButton} onClick={() => reset()}>
-                  <span className={styles.resetIcon}>X</span>
-                </button>
-                <div className="invalid-feedback">{error?.message}</div>
-              </div>
+                <StyledResetButton onClick={() => reset()}>
+                  <span>X</span>
+                </StyledResetButton>
+                <StyledInvalidInputText>{error?.message}</StyledInvalidInputText>
+              </Box>
             )}
           />
         </div>
 
-        <button className={styles.findButton} type={'submit'} disabled={watch('filter').length === 0}>
+        <StyledButton type={'submit'} disabled={watch('filter').length === 0}>
           Find
-        </button>
-      </form>
-      <nav className={styles.sortBar}>
-        <button
-          onClick={handleSortAll}
-          className={`${styles.sortButton} ${sort === 'all' ? styles.active : ''}`}
-          type={'button'}>
-          All
-        </button>
-        <button
+        </StyledButton>
+      </StyledSearchForm>
+      <StyledSortBar value={sort} centered>
+        <StyledSortTab onClick={handleSortAll} onChange={() => setSort('all')} value={'all'} label={'All'} />
+        <StyledSortTab
           onClick={handleSortActive}
-          className={`${styles.sortButton} ${sort === 'active' ? styles.active : ''}`}
-          type={'button'}>
-          Active
-        </button>
-        <button
-          onClick={handleSortDone}
-          className={`${styles.sortButton} ${sort === 'done' ? styles.active : ''}`}
-          type={'button'}>
-          Done
-        </button>
-        <button
+          onChange={() => setSort('active')}
+          value={'active'}
+          label={'Active'}
+        />
+        <StyledSortTab onClick={handleSortDone} onChange={() => setSort('done')} value={'done'} label={'Done'} />
+        <StyledSortTab
           onClick={handleSortImportant}
-          className={`${styles.sortButton} ${sort === 'important' ? styles.active : ''}`}
-          type={'button'}>
-          Important
-        </button>
-      </nav>
-      <div className={isLoading ? styles.wrapper : ''}>
+          onChange={() => setSort('important')}
+          value={'important'}
+          label={'Important'}
+        />
+      </StyledSortBar>
+      <Box display="flex" justifyContent="center" height={'50%'} margin={isLoading ? '100px 0 60px' : 0}>
         {error && (
-          <div className={styles.errorContainer}>
-            <h3 className={styles.errorTitle}>Oops! Something went wrong</h3>
-            <p className={styles.errorDescription}>{error.message}</p>
-          </div>
+          <Box display="flex" flexDirection="column" alignItems="center" gap={'40px'} margin={'80px 0 40px'}>
+            <StyledErrorTitle>Oops! Something went wrong</StyledErrorTitle>
+            <StyledErrorDescription>{error.message}</StyledErrorDescription>
+          </Box>
         )}
         <Loader isLoading={isLoading} variant={'circle'}>
-          <ul className={styles.tasks}>
-            {currentTasks &&
-              currentTasks.map((task: TTask) => (
+          {!error && currentTasks && (
+            <StyledTaskList>
+              {currentTasks.map((task: TTask) => (
                 <TaskItem task={task} sort={sort} filter={watch('filter')} key={task.id} />
               ))}
-          </ul>
+            </StyledTaskList>
+          )}
         </Loader>
-      </div>
-      <Pagination tasksPerPage={tasksperPage} totalTasks={tasks.length} paginate={paginate} currentPage={currentPage} />
+      </Box>
+      <Pagination tasksPerPage={tasksPerPage} totalTasks={tasks.length} paginate={paginate} currentPage={currentPage} />
     </section>
   );
 };
