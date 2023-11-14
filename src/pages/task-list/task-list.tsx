@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
+import { useSearchParams } from 'react-router-dom';
 import { SearchSubmitForm } from './search-form-validation.types';
 import styles from './styles.module.css';
 import { validationSchema } from './search-form-validation';
@@ -44,33 +45,41 @@ export const TaskList: FC = () => {
   const lastTaskIndex = currentPage * tasksperPage;
   const firstTaskIndex = lastTaskIndex - tasksperPage;
   const currentTasks = tasks.slice(firstTaskIndex, lastTaskIndex);
+  const [searchParams, setSearchParams] = useSearchParams('');
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const onSearchSubmit = (data: SearchSubmitForm) => {
     setSort('filter');
+    setSearchParams({ name: data.filter });
     dispatch(getSortedTasks({ name_like: data.filter }));
+    reset();
   };
+
   const handleFilterChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setValue('filter', evt.target.value);
   };
   const handleSortAll = () => {
     setSort('all');
+    setSearchParams('');
     dispatch(getTaskListData());
   };
 
   const handleSortActive = () => {
     setSort('active');
+    setSearchParams({ isCompleted: 'false' });
     dispatch(getSortedTasks({ isCompleted: false || 'false' || undefined }));
   };
 
   const handleSortDone = () => {
     setSort('done');
+    setSearchParams({ isCompleted: 'true' });
     dispatch(getSortedTasks({ isCompleted: true || 'true' }));
   };
 
   const handleSortImportant = () => {
     setSort('important');
+    setSearchParams({ isImportant: 'true' });
     dispatch(getSortedTasks({ isImportant: true || 'true' }));
   };
   return (
@@ -89,7 +98,7 @@ export const TaskList: FC = () => {
                   placeholder={'> search'}
                   className={`${styles.searchInput} ${error?.message ? 'is-invalid' : ''}`}
                 />
-                <button className={styles.resetButton} onClick={() => reset()}>
+                <button type={'reset'} className={styles.resetButton} onClick={() => reset()}>
                   <span className={styles.resetIcon}>X</span>
                 </button>
                 <div className="invalid-feedback">{error?.message}</div>
