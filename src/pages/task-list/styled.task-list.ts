@@ -107,7 +107,7 @@ export const StyledErrorTitle = styled.h3`
 export const StyledErrorDescription = styled.p`
   font-size: 16px;
   color: #3f3e45;
-  padding: 20px 80px;
+  padding: 40px 80px;
   border: 1px solid #d04a4a;
   border-radius: 20px;
 `;

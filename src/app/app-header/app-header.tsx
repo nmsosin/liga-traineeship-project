@@ -1,10 +1,15 @@
 import { FC } from 'react';
 import { Box } from '@mui/material';
-import styles from './styles.module.css';
 import { StyledAddButton, StyledHeaderTitle, StyledNavLink } from 'src/app/app-header/styled.app-header';
+import { useAppDispatch } from 'src/services/hooks/hooks';
+import { resetTask } from 'src/services/actions/task/task-actions';
 export const AppHeader: FC = () => {
+  const dispatch = useAppDispatch();
+  const onAddTaskClick = () => {
+    dispatch(resetTask());
+  };
   return (
-    <header className={styles.headerWrapper}>
+    <header>
       <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} padding={'10px 0 30px'}>
         <StyledNavLink to={'/'}>
           <svg width="50" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,9 +26,11 @@ export const AppHeader: FC = () => {
               strokeWidth="7"
             />
           </svg>
-          <StyledHeaderTitle className={styles.headerTitle}>Todo list</StyledHeaderTitle>
+          <StyledHeaderTitle>Todo list</StyledHeaderTitle>
         </StyledNavLink>
-        <StyledAddButton to={'/task-form'}>Add new task</StyledAddButton>
+        <StyledAddButton to={'/task-form'} onClick={() => onAddTaskClick()}>
+          Add new task
+        </StyledAddButton>
       </Box>
     </header>
   );

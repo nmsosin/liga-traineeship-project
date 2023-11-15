@@ -3,10 +3,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Checkbox, FormControlLabel } from '@mui/material';
-import styles from './styles.module.css';
 import { TaskSubmitForm } from './form-validation.types';
 import { validationSchema } from './form-validation';
-import { resetTask, updateTask } from 'src/services/actions/task/task-actions';
+import { updateTask } from 'src/services/actions/task/task-actions';
 import { addNewTask, getTaskListData } from 'src/services/actions/task-list/task-list-actions';
 import { useAppDispatch, useAppSelector } from 'src/services/hooks/hooks';
 import { getTaskRequestSelector } from 'constants/selector-creators';
@@ -25,9 +24,6 @@ export const Form: FC<TFormProps> = ({ task, taskId }) => {
   useEffect(() => {
     setIsLoading(status);
   }, [status]);
-  useEffect(() => {
-    dispatch(resetTask());
-  }, [dispatch]);
   const navigate = useNavigate();
   const defaultValues: TaskSubmitForm =
     taskId && task !== null
