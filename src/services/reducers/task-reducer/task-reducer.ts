@@ -1,4 +1,4 @@
-import { TInitialTaskState } from './task-reducer.types';
+import { TInitialTaskState } from 'src/services/reducers/task-reducer/task-reducer.types';
 import {
   DELETE_TASK_FAILED,
   DELETE_TASK_REQUEST,

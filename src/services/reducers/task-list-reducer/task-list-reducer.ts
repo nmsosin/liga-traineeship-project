@@ -1,4 +1,4 @@
-import { TInitialTaskListState } from './task-list-reducer.types';
+import { TInitialTaskListState } from 'src/services/reducers//task-list-reducer/task-list-reducer.types';
 import {
   ADD_TASK_FAILED,
   ADD_TASK_REQUEST,
