@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Box } from '@mui/material';
+import { Box, FormControlLabel, Checkbox } from '@mui/material';
 import { TTaskItemProps } from 'src/app/task-item/task-item.types';
 import { deleteTask, updateTask } from 'src/services/actions/task/task-actions';
 import { useAppDispatch, useAppSelector } from 'src/services/hooks/hooks';
@@ -10,7 +10,6 @@ import {
   getTaskErrorSelector,
   getUpdateTaskRequestSelector,
 } from 'src/constants/selector-creators';
-import { Checkbox } from 'src/components/Checkbox';
 import { booleanMap } from 'src/utils/mappers';
 import {
   StyledActionButton,
@@ -139,19 +138,25 @@ export const TaskItem: FC<TTaskItemProps> = ({ task, sort, filter }) => {
         </Box>
         <StyledTaskDescription>{info}</StyledTaskDescription>
         <Box display={'flex'} gap={'40px'}>
-          <Checkbox
-            id={id}
-            label={'important'}
-            checked={importance}
-            onChange={isLoading ? undefined : () => handleImportanceChange(sort, filter)}
+          <FormControlLabel
             disabled={isLoading || status}
+            label={'important'}
+            control={
+              <Checkbox
+                checked={importance}
+                onChange={isLoading ? undefined : () => handleImportanceChange(sort, filter)}
+              />
+            }
           />
-          <Checkbox
-            id={id}
+          <FormControlLabel
             label={'done'}
-            checked={status}
-            onChange={isLoading ? undefined : () => handleStatusChange(sort, filter)}
-            disabled={isLoading}
+            control={
+              <Checkbox
+                id={'isCompleted'}
+                checked={status}
+                onChange={isLoading ? undefined : () => handleStatusChange(sort, filter)}
+              />
+            }
           />
         </Box>
       </StyledListItem>
