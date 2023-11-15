@@ -1,8 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Box } from '@mui/material';
-import styles from './styles.module.css';
-import { TTaskItemProps } from './task-item.types';
+import { TTaskItemProps } from 'src/app/task-item/task-item.types';
 import { deleteTask, updateTask } from 'src/services/actions/task/task-actions';
 import { useAppDispatch, useAppSelector } from 'src/services/hooks/hooks';
 import { getSortedTasks, getTaskListData } from 'src/services/actions/task-list/task-list-actions';

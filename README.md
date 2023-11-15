@@ -8,6 +8,10 @@ npm run dev - запустить проект
 
 https://todo-liga-internship.vercel.app/
 
+## Деплой на GitHub Pages
+
+[gh-pages](https://nmsosin.github.io/liga-traineeship-project/)
+
 ## Технологии и инструменты, которые используются в проекте
 
 * __Языки/фреймворки/библиотеки__: Typescript, React, React-router-dom, Redux

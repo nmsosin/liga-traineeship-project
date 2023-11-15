@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Box } from '@mui/material';
-import { TPaginationProps } from './pagination.types';
+import { TPaginationProps } from 'src/app/pagination/pagination.types';
 import { StyledPagination } from 'src/app/pagination/styled.pagination';
 
 export const AppPagination: FC<TPaginationProps> = ({ tasksPerPage, totalTasks, paginate, currentPage }) => {

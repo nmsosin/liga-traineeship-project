@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { AppHeader } from './app-header/app-header';
-import styles from './styles.module.css';
+import { AppHeader } from 'src/app/app-header/app-header';
 import { TaskForm } from 'src/pages/task-form/task-form';
 import { TaskList } from 'src/pages/task-list/task-list';
 import { NotFound404 } from 'src/pages/not-found/not-found-404';
@@ -10,9 +9,9 @@ import { ADD_TASK_PAGE_ROUTE, EDIT_TASK_PAGE_ROUTE, MAIN_PAGE_ROUTE } from 'src/
 
 export const App: FC = () => {
   return (
-    <PageContainer className={styles.page}>
+    <PageContainer>
       <AppHeader />
-      <main className={styles.app}>
+      <main>
         <Routes>
           <Route path={MAIN_PAGE_ROUTE} element={<TaskList />} />
           <Route path={ADD_TASK_PAGE_ROUTE} element={<TaskForm />} />
