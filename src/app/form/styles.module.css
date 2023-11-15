@@ -1,41 +1,41 @@
-.form {
-  display: flex;
-  flex-direction: column;
-  padding: 40px 20px;
-  border: 2px solid #ad9898;
-  border-radius: 20px;
-  gap: 20px;
-}
+/*.form {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  padding: 40px 20px;*/
+/*  border: 2px solid #ad9898;*/
+/*  border-radius: 20px;*/
+/*  gap: 20px;*/
+/*}*/
 
-.label {
-  color: #ad9898;
-  font-size: 18px;
-  padding-bottom: 10px;
-}
+/*.label {*/
+/*  color: #ad9898;*/
+/*  font-size: 18px;*/
+/*  padding-bottom: 10px;*/
+/*}*/
 
-.checkboxes {
-  display: flex;
-  gap: 40px;
-  padding-top: 20px;
-}
+/*.checkboxes {*/
+/*  display: flex;*/
+/*  gap: 40px;*/
+/*  padding-top: 20px;*/
+/*}*/
 
-.saveButton {
-  border: none;
-  border-radius: 5px;
-  background-color: #ad9898;
-  color: #f3f0ec;
-  white-space: nowrap;
-  padding: 7px 45px;
-  margin-top: 40px;
-  align-self: center;
-}
+/*.saveButton {*/
+/*  border: none;*/
+/*  border-radius: 5px;*/
+/*  background-color: #ad9898;*/
+/*  color: #f3f0ec;*/
+/*  white-space: nowrap;*/
+/*  padding: 7px 45px;*/
+/*  margin-top: 40px;*/
+/*  align-self: center;*/
+/*}*/
 
-.saveButton:hover {
-  color: #3f3e45;
-}
+/*.saveButton:hover {*/
+/*  color: #3f3e45;*/
+/*}*/
 
-.wrapper {
-  display: flex;
-  justify-content: center;
-  margin: 100px 0 60px;
-}
+/*.wrapper {*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  margin: 100px 0 60px;*/
+/*}*/
