@@ -1,80 +1,81 @@
-.listItem {
-  padding: 20px;
-  border: 2px solid #ad9898;
-  border-radius: 20px;
-}
+/*.listItem {*/
+/*  padding: 20px;*/
+/*  border: 2px solid #ad9898;*/
+/*  border-radius: 20px;*/
+/*}*/
 
-.important {
-  border: 2px solid #d04a4a;
-}
+/*.important {*/
+/*  border: 2px solid #d04a4a;*/
+/*}*/
 
-.important .taskTitle {
-  color: #d04a4a;
-}
+/*.important .taskTitle {*/
+/*  color: #d04a4a;*/
+/*}*/
 
-.completed {
-  text-decoration: line-through;
-  border: 2px solid #ad9898;
-  color: rgba(173, 152, 152, 0.5);
-}
+/*.completed {*/
+/*  text-decoration: line-through;*/
+/*  border: 2px solid #ad9898;*/
+/*  color: rgba(173, 152, 152, 0.5);*/
+/*}*/
 
-.completed .taskTitle {
-  color: rgba(173, 152, 152, 0.5);
-}
+/*.completed .taskTitle {*/
+/*  color: rgba(173, 152, 152, 0.5);*/
+/*}*/
 
-.taskHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-bottom: 30px;
-}
+/*.taskHeader {*/
+/*  position: relative;*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  align-items: flex-start;*/
+/*  padding-bottom: 30px;*/
+/*}*/
 
-.taskActions {
-  display: flex;
-  gap: 10px;
-}
+/*.taskActions {*/
+/*  display: flex;*/
+/*  gap: 10px;*/
+/*}*/
 
-.editButton:hover {
-  transform: scale(1.1);
-}
 
-.taskTitle {
-  word-wrap: break-word;
-  max-width: 400px;
-  font-size: 28px;
-  color: #AD9898;
-  position: relative;
-  margin: 0;
-  padding-top: 25px;
-}
+/*.taskTitle {*/
+/*  word-wrap: break-word;*/
+/*  max-width: 400px;*/
+/*  font-size: 28px;*/
+/*  color: #AD9898;*/
+/*  margin: 0;*/
+/*  padding-top: 25px;*/
+/*}*/
 
-.taskDescription {
-  word-wrap: break-word;
-  max-width: 500px;
-  margin: 0;
-  padding-bottom: 40px;
-}
+/*.taskDescription {*/
+/*  word-wrap: break-word;*/
+/*  max-width: 500px;*/
+/*  margin: 0;*/
+/*  padding-bottom: 40px;*/
+/*}*/
 
-.taskId {
-  display: inline-block;
-  width: 300px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 20px;
-  color: #dcd5cc;
-}
+/*.taskId {*/
+/*  display: inline-block;*/
+/*  width: 300px;*/
+/*  position: absolute;*/
+/*  top: 0;*/
+/*  left: 0;*/
+/*  font-size: 20px;*/
+/*  color: #dcd5cc;*/
+/*}*/
 
-.deleteButton {
-  border: none;
-  background-color: transparent;
-}
+/*.editButton:hover {*/
+/*  transform: scale(1.1);*/
+/*}*/
 
-.deleteButton:hover {
-  transform: scale(1.1);
-}
+/*.deleteButton {*/
+/*  border: none;*/
+/*  background-color: transparent;*/
+/*}*/
 
-.checkboxes {
-  display: flex;
-  gap: 40px;
-}
+/*.deleteButton:hover {*/
+/*  transform: scale(1.1);*/
+/*}*/
+
+/*.checkboxes {*/
+/*  display: flex;*/
+/*  gap: 40px;*/
+/*}*/
