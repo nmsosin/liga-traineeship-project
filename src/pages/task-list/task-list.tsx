@@ -2,9 +2,8 @@ import React, { ChangeEvent, FC, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useSearchParams } from 'react-router-dom';
-import { Box } from '@mui/material';
+import { Box, Pagination } from '@mui/material';
 import { SearchSubmitForm } from './search-form-validation.types';
-import styles from './styles.module.css';
 import { validationSchema } from './search-form-validation';
 import { getSortedTasks, getTaskListData } from 'src/services/actions/task-list/task-list-actions';
 import { useAppDispatch, useAppSelector } from 'src/services/hooks/hooks';
@@ -17,7 +16,7 @@ import {
 import { TaskItem } from 'src/app/task-item/task-item';
 import { TTask } from 'src/types/tasks';
 import { Loader } from 'src/components/Loader';
-import { Pagination } from 'src/app/pagination/pagination';
+import { AppPagination } from 'src/app/pagination/pagination';
 import {
   StyledButton,
   StyledErrorDescription,
@@ -123,7 +122,7 @@ export const TaskList: FC = () => {
           Find
         </StyledButton>
       </StyledSearchForm>
-      <StyledSortBar value={sort} centered>
+      <StyledSortBar value={sort === 'filter' ? 'all' : sort} centered>
         <StyledSortTab onClick={handleSortAll} onChange={() => setSort('all')} value={'all'} label={'All'} />
         <StyledSortTab
           onClick={handleSortActive}
@@ -156,7 +155,12 @@ export const TaskList: FC = () => {
           )}
         </Loader>
       </Box>
-      <Pagination tasksPerPage={tasksPerPage} totalTasks={tasks.length} paginate={paginate} currentPage={currentPage} />
+      <AppPagination
+        tasksPerPage={tasksPerPage}
+        totalTasks={tasks.length}
+        paginate={paginate}
+        currentPage={currentPage}
+      />
     </section>
   );
 };

@@ -76,10 +76,10 @@ export const StyledSortTab = styled(Tab)`
   color: #ad9898;
   box-sizing: border-box;
   padding: 5px 15px;
-  &:first-child {
+  &:first-of-type {
     border-radius: 10px 0 0 10px;
   }
-  &:last-child {
+  &:last-of-type {
     border-radius: 0 10px 10px 0;
   }
   &:hover {

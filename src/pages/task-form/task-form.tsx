@@ -1,13 +1,12 @@
 import { FC, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
-import styles from './styles.module.css';
 import { useAppDispatch, useAppSelector } from 'src/services/hooks/hooks';
 import { getCurrentTask } from 'src/services/actions/task/task-actions';
 import { PageContainer } from 'src/components/PageContainer';
 import { Form } from 'src/app/form/form';
 import { getCurrentTaskSelector, getTaskErrorSelector } from 'src/constants/selector-creators';
-import { StyledErrorDescription, StyledErrorTitle, StyledFormTitle } from 'pages/task-form/styled.task-form';
+import { StyledErrorDescription, StyledErrorTitle, StyledFormTitle } from 'src/pages/task-form/styled.task-form';
 
 export const TaskForm: FC = () => {
   const { id: taskId } = useParams();
