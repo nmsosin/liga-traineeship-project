@@ -1,28 +1,16 @@
-import { FC } from 'react';
-import styles from './styles.module.css';
+import React, { FC } from 'react';
+import { Box } from '@mui/material';
 import { TPaginationProps } from './pagination.types';
+import { StyledPagination } from 'src/app/pagination/styled.pagination';
 
-export const Pagination: FC<TPaginationProps> = ({ tasksPerPage, totalTasks, paginate, currentPage }) => {
-  const pageNumbers: number[] = [];
-
-  for (let i = 1; i <= Math.ceil(totalTasks / tasksPerPage); i++) {
-    pageNumbers.push(i);
-  }
-
+export const AppPagination: FC<TPaginationProps> = ({ tasksPerPage, totalTasks, paginate, currentPage }) => {
   return (
-    <nav className={styles.paginationBar}>
-      <ul className={styles.pages}>
-        {pageNumbers.map((pageNumber) => (
-          <li className={styles.pageItem} key={pageNumber}>
-            <button
-              className={`${styles.pageButton} ${pageNumber === currentPage ? styles.active : ''}`}
-              type={'button'}
-              onClick={() => paginate(pageNumber)}>
-              {pageNumber}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <Box display={'flex'} justifyContent={'center'}>
+      <StyledPagination
+        count={Math.ceil(totalTasks / tasksPerPage)}
+        page={currentPage}
+        onChange={(e, value) => paginate(value)}
+      />
+    </Box>
   );
 };

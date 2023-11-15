@@ -1,15 +1,15 @@
 import { FC } from 'react';
-import { NavLink } from 'react-router-dom';
-import styles from './styles.module.css';
+import { Box } from '@mui/material';
+import { StyledBackButton, StyledErrorDescription, StyledTitle } from 'src/pages/not-found/styled.not-found-404';
 
 export const NotFound404: FC = () => {
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>404 Page not found</h2>
-      <p className={styles.text}>Please, check the address</p>
-      <NavLink className={styles.backButton} to={'/'}>
+    <Box display={'flex'} alignItems={'center'} flexDirection={'column'} padding={'80px 0'}>
+      <StyledTitle>404 Page not found</StyledTitle>
+      <StyledErrorDescription>Please, check the address</StyledErrorDescription>
+      <StyledBackButton to={'/'}>
         Back on track
-      </NavLink>
-    </div>
+      </StyledBackButton>
+    </Box>
   );
 };

@@ -2,7 +2,7 @@ import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import styles from './styles.module.css';
+import { Box, Checkbox, FormControlLabel } from '@mui/material';
 import { TaskSubmitForm } from './form-validation.types';
 import { validationSchema } from './form-validation';
 import { updateTask } from 'src/services/actions/task/task-actions';
@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from 'src/services/hooks/hooks';
 import { getTaskRequestSelector } from 'constants/selector-creators';
 import { Loader } from 'components/Loader';
 import { TTask } from 'types/tasks';
+import { StyledForm, StyledLabel, StyledSaveButton, StyledTextInput } from 'src/app/form/styled.form';
 
 export type TFormProps = {
   task: TTask | null;
@@ -19,11 +20,11 @@ export type TFormProps = {
 export const Form: FC<TFormProps> = ({ task, taskId }) => {
   const status = useAppSelector(getTaskRequestSelector);
   const [isLoading, setIsLoading] = useState(status);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     setIsLoading(status);
   }, [status]);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const defaultValues: TaskSubmitForm =
     taskId && task !== null
       ? task
@@ -62,65 +63,64 @@ export const Form: FC<TFormProps> = ({ task, taskId }) => {
     }, 100);
   };
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <div className={isLoading ? styles.wrapper : ''}>
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+      <Box
+        display={'flex'}
+        flexDirection={'column'}
+        alignItems={isLoading ? 'center' : 'stretch'}
+        margin={isLoading ? '100px 0 60px' : '0'}>
         <Loader isLoading={isLoading} variant={'circle'}>
-          <div>
-            <label className={styles.label}>Task title</label>
-            <Controller
-              control={control}
-              name="name"
-              render={({ field, fieldState: { error } }) => (
-                <div>
-                  <input
-                    value={field.value}
-                    onChange={handleNameChange}
-                    type="text"
-                    placeholder={'> Add task title [ up to 100 characters ]'}
-                    className={`form-control ${error?.message ? 'is-invalid' : ''}`}
-                  />
-                  <div className="invalid-feedback">{error?.message}</div>
-                </div>
-              )}
-            />
-          </div>
-          <div>
-            <label className={styles.label}>Task description</label>
-            <Controller
-              control={control}
-              name="info"
-              render={({ field, fieldState: { error } }) => (
-                <div>
-                  <input
-                    value={field.value}
-                    onChange={handleInfoChange}
-                    type="text"
-                    placeholder={'> Add some more information [ up to 500 characters ]'}
-                    className={`form-control ${error?.message ? 'is-invalid' : ''}`}
-                  />
-                  <div className="invalid-feedback">{error?.message}</div>
-                </div>
-              )}
-            />
-          </div>
-          <div className={styles.checkboxes}>
+          <Box display={'flex'} flexDirection={'column'} gap={'20px'}>
+            <div>
+              <StyledLabel>Task title</StyledLabel>
+              <Controller
+                control={control}
+                name="name"
+                render={({ field, fieldState: { error } }) => (
+                  <div>
+                    <StyledTextInput
+                      error={error?.message ? true : false}
+                      helperText={error?.message ? `${error?.message}` : ''}
+                      value={field.value}
+                      onChange={handleNameChange}
+                      type="text"
+                      placeholder={'> Add task title [ up to 100 characters ]'}
+                    />
+                  </div>
+                )}
+              />
+            </div>
+            <div>
+              <StyledLabel>Task description</StyledLabel>
+              <Controller
+                control={control}
+                name="info"
+                render={({ field, fieldState: { error } }) => (
+                  <div>
+                    <StyledTextInput
+                      error={error?.message ? true : false}
+                      helperText={error?.message ? `${error?.message}` : ''}
+                      value={field.value}
+                      onChange={handleInfoChange}
+                      type="text"
+                      placeholder={'> Add some more information [ up to 500 characters ]'}
+                    />
+                  </div>
+                )}
+              />
+            </div>
+          </Box>
+          <Box display={'flex'} gap={'40px'} paddingTop={'20px'}>
             <Controller
               control={control}
               name="isImportant"
               render={({ field, fieldState: { error } }) => (
-                <div className="form-group form-check">
-                  <input
-                    id={'isImportant'}
-                    checked={field.value}
-                    onChange={handleImportanceChange}
-                    type="checkbox"
+                <div>
+                  <FormControlLabel
                     disabled={watch('isCompleted')}
-                    className={`form-check-input ${error?.message ? 'is-invalid' : ''}`}
+                    label={'important'}
+                    control={<Checkbox checked={field.value} onChange={handleImportanceChange} />}
                   />
-                  <label htmlFor="isImportant" className="form-check-label">
-                    important
-                  </label>
-                  <div className="invalid-feedback">{error?.message}</div>
                 </div>
               )}
             />
@@ -128,27 +128,18 @@ export const Form: FC<TFormProps> = ({ task, taskId }) => {
               control={control}
               name="isCompleted"
               render={({ field, fieldState: { error } }) => (
-                <div className="form-group form-check">
-                  <input
-                    id={'isCompleted'}
-                    checked={field.value}
-                    onChange={handleStatusChange}
-                    type="checkbox"
-                    className={`form-check-input ${error?.message ? 'is-invalid' : ''}`}
+                <div>
+                  <FormControlLabel
+                    label={'done'}
+                    control={<Checkbox id={'isCompleted'} checked={field.value} onChange={handleStatusChange} />}
                   />
-                  <label htmlFor="isCompleted" className="form-check-label">
-                    done
-                  </label>
-                  <div className="invalid-feedback">{error?.message}</div>
                 </div>
               )}
             />
-          </div>
-          <button className={styles.saveButton} type={'submit'}>
-            Save
-          </button>
+          </Box>
+          <StyledSaveButton type={'submit'}>Save</StyledSaveButton>
         </Loader>
-      </div>
-    </form>
+      </Box>
+    </StyledForm>
   );
 };

@@ -1,8 +1,9 @@
 import { FC, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { deleteTask, updateTask } from 'src/services/actions/task/task-actions';
+import { Box } from '@mui/material';
 import styles from './styles.module.css';
 import { TTaskItemProps } from './task-item.types';
+import { deleteTask, updateTask } from 'src/services/actions/task/task-actions';
 import { useAppDispatch, useAppSelector } from 'src/services/hooks/hooks';
 import { getSortedTasks, getTaskListData } from 'src/services/actions/task-list/task-list-actions';
 import {
@@ -12,6 +13,13 @@ import {
 } from 'src/constants/selector-creators';
 import { Checkbox } from 'src/components/Checkbox';
 import { booleanMap } from 'src/utils/mappers';
+import {
+  StyledActionButton,
+  StyledListItem,
+  StyledTaskDescription,
+  StyledTaskId,
+  StyledTaskTitle,
+} from 'app/task-item/task-item.styled';
 
 export const TaskItem: FC<TTaskItemProps> = ({ task, sort, filter }) => {
   const { id, name, info, isImportant, isCompleted } = task;
@@ -66,48 +74,52 @@ export const TaskItem: FC<TTaskItemProps> = ({ task, sort, filter }) => {
   return (
     <>
       {error && <p>{JSON.stringify(error)}</p>}
-      <li
-        key={id}
-        className={`${styles.listItem} ${isCompleted ? styles.completed : ''} ${isImportant ? styles.important : ''}`}>
-        <div className={styles.taskHeader}>
-          <h2 className={styles.taskTitle}>
-            {name} <span className={styles.taskId}>{`id #${id}`}</span>
-          </h2>
-          <div className={styles.taskActions}>
-            <NavLink className={styles.editButton} to={`task-form/${id}`}>
-              <svg width="40" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="45" height="45" rx="22.5" fill="#F3F0EC" />
-                <rect x="22.1667" y="20.5" width="1.66667" height="12.5" rx="0.833333" fill="#F3F0EC" />
-                <rect x="26.3333" y="20.5" width="1.66667" height="12.5" rx="0.833333" fill="#F3F0EC" />
-                <rect x="18" y="20.5" width="1.66667" height="12.5" rx="0.833333" fill="#F3F0EC" />
-                <rect
-                  x="23.1618"
-                  y="14.3702"
-                  width="10"
-                  height="14"
-                  rx="1"
-                  transform="rotate(39.8994 23.1618 14.3702)"
-                  fill="#AD9898"
-                />
-                <path
-                  d="M13.2296 35.3943C12.5067 35.6588 11.7685 35.0416 11.9008 34.2833L13.0919 27.4582C13.2242 26.6999 14.1279 26.3692 14.7184 26.863L20.0336 31.307C20.6241 31.8008 20.4587 32.7487 19.7358 33.0133L13.2296 35.3943Z"
-                  fill="#AD9898"
-                />
-                <rect
-                  x="31.4749"
-                  y="20.0174"
-                  width="10"
-                  height="1"
-                  transform="rotate(-140.101 31.4749 20.0174)"
-                  fill="#AD9898"
-                />
-                <path
-                  d="M33.3993 17.7159C33.045 18.1396 32.4143 18.1959 31.9906 17.8417L25.8533 12.7101C25.4296 12.3559 25.3733 11.7252 25.7275 11.3015V11.3015C26.7903 10.0304 28.6823 9.86155 29.9534 10.9243L33.0221 13.4901C34.2932 14.5529 34.462 16.4448 33.3993 17.7159V17.7159Z"
-                  fill="#AD9898"
-                />
-              </svg>
+      <StyledListItem key={id} isImportant={isImportant} isCompleted={isCompleted}>
+        <Box
+          position={'relative'}
+          display={'flex'}
+          justifyContent={'space-between'}
+          alignItems={'flex-start'}
+          paddingBottom={'30px'}>
+          <StyledTaskId>{`id #${id}`}</StyledTaskId>
+          <StyledTaskTitle>{name}</StyledTaskTitle>
+          <Box display={'flex'}>
+            <NavLink to={`task-form/${id}`}>
+              <StyledActionButton type={'button'}>
+                <svg width="40" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="45" height="45" rx="22.5" fill="#F3F0EC" />
+                  <rect x="22.1667" y="20.5" width="1.66667" height="12.5" rx="0.833333" fill="#F3F0EC" />
+                  <rect x="26.3333" y="20.5" width="1.66667" height="12.5" rx="0.833333" fill="#F3F0EC" />
+                  <rect x="18" y="20.5" width="1.66667" height="12.5" rx="0.833333" fill="#F3F0EC" />
+                  <rect
+                    x="23.1618"
+                    y="14.3702"
+                    width="10"
+                    height="14"
+                    rx="1"
+                    transform="rotate(39.8994 23.1618 14.3702)"
+                    fill="#AD9898"
+                  />
+                  <path
+                    d="M13.2296 35.3943C12.5067 35.6588 11.7685 35.0416 11.9008 34.2833L13.0919 27.4582C13.2242 26.6999 14.1279 26.3692 14.7184 26.863L20.0336 31.307C20.6241 31.8008 20.4587 32.7487 19.7358 33.0133L13.2296 35.3943Z"
+                    fill="#AD9898"
+                  />
+                  <rect
+                    x="31.4749"
+                    y="20.0174"
+                    width="10"
+                    height="1"
+                    transform="rotate(-140.101 31.4749 20.0174)"
+                    fill="#AD9898"
+                  />
+                  <path
+                    d="M33.3993 17.7159C33.045 18.1396 32.4143 18.1959 31.9906 17.8417L25.8533 12.7101C25.4296 12.3559 25.3733 11.7252 25.7275 11.3015V11.3015C26.7903 10.0304 28.6823 9.86155 29.9534 10.9243L33.0221 13.4901C34.2932 14.5529 34.462 16.4448 33.3993 17.7159V17.7159Z"
+                    fill="#AD9898"
+                  />
+                </svg>
+              </StyledActionButton>
             </NavLink>
-            <button className={styles.deleteButton} type={'button'} onClick={() => handleDeleteTask(id, sort, filter)}>
+            <StyledActionButton type={'button'} onClick={() => handleDeleteTask(id, sort, filter)}>
               <svg width="40" height="40" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="45" height="45" rx="22.5" fill="#F3F0EC" />
                 <path
@@ -123,11 +135,11 @@ export const TaskItem: FC<TTaskItemProps> = ({ task, sort, filter }) => {
                 <rect x="26.3333" y="20.5" width="1.66667" height="12.5" rx="0.833333" fill="#F3F0EC" />
                 <rect x="18" y="20.5" width="1.66667" height="12.5" rx="0.833333" fill="#F3F0EC" />
               </svg>
-            </button>
-          </div>
-        </div>
-        <p className={styles.taskDescription}>{info}</p>
-        <div className={styles.checkboxes}>
+            </StyledActionButton>
+          </Box>
+        </Box>
+        <StyledTaskDescription>{info}</StyledTaskDescription>
+        <Box display={'flex'} gap={'40px'}>
           <Checkbox
             id={id}
             label={'important'}
@@ -142,8 +154,8 @@ export const TaskItem: FC<TTaskItemProps> = ({ task, sort, filter }) => {
             onChange={isLoading ? undefined : () => handleStatusChange(sort, filter)}
             disabled={isLoading}
           />
-        </div>
-      </li>
+        </Box>
+      </StyledListItem>
     </>
   );
 };
