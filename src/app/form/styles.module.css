@@ -22,8 +22,8 @@
 .saveButton {
   border: none;
   border-radius: 5px;
-  background-color: #AD9898;
-  color: #F3F0EC;
+  background-color: #ad9898;
+  color: #f3f0ec;
   white-space: nowrap;
   padding: 7px 45px;
   margin-top: 40px;
@@ -31,7 +31,7 @@
 }
 
 .saveButton:hover {
-  color: #3F3E45;
+  color: #3f3e45;
 }
 
 .wrapper {
